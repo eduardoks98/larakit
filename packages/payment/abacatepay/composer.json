@@ -1,0 +1,54 @@
+{
+    "name": "eduardoks98/payment-abacatepay",
+    "description": "AbacatePay payment integration for Laravel using official PHP SDK",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "abacatepay",
+        "payment",
+        "pix",
+        "billing",
+        "subscription",
+        "payment-gateway"
+    ],
+    "authors": [
+        {
+            "name": "Eduardo Steffens",
+            "email": "eduardo@example.com",
+            "homepage": "https://github.com/eduardoks98"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2|^8.3",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/http": "^10.0|^11.0|^12.0",
+        "illuminate/database": "^10.0|^11.0|^12.0",
+        "abacatepay/php-sdk": "^1.0",
+        "eduardoks98/base-api": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardoks98\\PaymentAbacatePay\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Eduardoks98\\PaymentAbacatePay\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduardoks98\\PaymentAbacatePay\\AbacatePayServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

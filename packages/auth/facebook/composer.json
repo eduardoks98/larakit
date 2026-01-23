@@ -1,0 +1,55 @@
+{
+    "name": "eduardoks98/auth-facebook",
+    "description": "Facebook Login Integration for Laravel using League OAuth2 Facebook with Graph API v19.0",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "facebook",
+        "oauth2",
+        "authentication",
+        "social-login",
+        "facebook-login",
+        "graph-api",
+        "sanctum"
+    ],
+    "authors": [
+        {
+            "name": "Eduardo Steffens",
+            "email": "eduardo@example.com",
+            "homepage": "https://github.com/eduardoks98"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2|^8.3",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/http": "^10.0|^11.0|^12.0",
+        "illuminate/database": "^10.0|^11.0|^12.0",
+        "league/oauth2-facebook": "^2.0",
+        "eduardoks98/auth": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardoks98\\FacebookAuth\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Eduardoks98\\FacebookAuth\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduardoks98\\FacebookAuth\\FacebookAuthServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

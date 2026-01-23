@@ -1,0 +1,58 @@
+{
+    "name": "eduardoks98/auth-microsoft",
+    "description": "Microsoft Azure AD OAuth 2.0 authentication for Laravel using Sanctum - supports Office 365, Azure AD, and personal Microsoft accounts",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "microsoft",
+        "azure-ad",
+        "oauth2",
+        "office365",
+        "authentication",
+        "sanctum",
+        "graph-api",
+        "azure"
+    ],
+    "authors": [
+        {
+            "name": "Eduardo Steffens",
+            "email": "eduardo@example.com",
+            "homepage": "https://github.com/eduardoks98"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2|^8.3",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/http": "^10.0|^11.0|^12.0",
+        "illuminate/database": "^10.0|^11.0|^12.0",
+        "thenetworg/oauth2-azure": "^2.0",
+        "laravel/sanctum": "^3.0|^4.0",
+        "eduardoks98/base-api": "^1.0",
+        "eduardoks98/auth": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardoks98\\MicrosoftAuth\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Eduardoks98\\MicrosoftAuth\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduardoks98\\MicrosoftAuth\\MicrosoftAuthServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Google Auth Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <coverage>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="GOOGLE_CLIENT_ID" value="test-client-id"/>
+        <env name="GOOGLE_CLIENT_SECRET" value="test-client-secret"/>
+        <env name="GOOGLE_REDIRECT_URI" value="http://localhost/auth/google/callback"/>
+    </php>
+</phpunit>

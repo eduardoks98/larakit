@@ -1,0 +1,23 @@
+{
+    "name": "eduardoks98/reverb",
+    "description": "Laravel Reverb WebSocket configuration and helpers",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1|^8.2|^8.3",
+        "illuminate/support": "^11.0|^12.0",
+        "eduardoks98/base-api": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardoks98\\Reverb\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduardoks98\\Reverb\\ReverbServiceProvider"
+            ]
+        }
+    }
+}

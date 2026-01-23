@@ -1,0 +1,38 @@
+{
+    "name": "eduardoks98/security",
+    "description": "Security package - CSP, CORS, IP blocking, OWASP compliance",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["laravel", "security", "csp", "cors", "ip-blocking", "owasp"],
+    "authors": [
+        {
+            "name": "Eduardo Steffens",
+            "email": "eduardoks98@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/database": "^10.0|^11.0|^12.0",
+        "eduardoks98/base-api": "^1.0",
+        "spomky-labs/aes-key-wrap": "^7.0",
+        "web-token/jwt-framework": "^4.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardoks98\\Security\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduardoks98\\Security\\SecurityServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

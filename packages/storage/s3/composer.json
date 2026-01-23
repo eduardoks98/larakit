@@ -1,0 +1,44 @@
+{
+    "name": "eduardoks98/storage-s3",
+    "description": "AWS S3 storage wrapper for Laravel with signed URLs, CDN integration, and image optimization",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eduardo Steffens",
+            "email": "eduardoks98@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2",
+        "aws/aws-sdk-php-laravel": "^3.0",
+        "eduardoks98/base-api": "^1.0",
+        "illuminate/support": "^10.0|^11.0|^12.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardoks98\\StorageS3\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Eduardoks98\\StorageS3\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduardoks98\\StorageS3\\StorageS3ServiceProvider"
+            ],
+            "aliases": {
+                "S3Storage": "Eduardoks98\\StorageS3\\Facades\\S3Storage"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

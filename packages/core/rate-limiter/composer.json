@@ -1,0 +1,61 @@
+{
+    "name": "eduardoks98/rate-limiter",
+    "description": "Advanced 3-tier rate limiting with geolocation, IP whitelisting, and fail2ban integration for Laravel APIs",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "api",
+        "rate-limiting",
+        "throttling",
+        "ip-blocking",
+        "geolocation",
+        "fail2ban",
+        "owasp",
+        "security"
+    ],
+    "authors": [
+        {
+            "name": "Eduardo Steffens",
+            "email": "eduardo@example.com",
+            "homepage": "https://github.com/eduardoks98"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2|^8.3",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/http": "^10.0|^11.0|^12.0",
+        "illuminate/database": "^10.0|^11.0|^12.0",
+        "illuminate/cache": "^10.0|^11.0|^12.0",
+        "eduardoks98/base-api": "^1.0",
+        "eduardoks98/security": "^1.0",
+        "stevebauman/location": "^7.4"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardoks98\\RateLimiter\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Eduardoks98\\RateLimiter\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduardoks98\\RateLimiter\\RateLimiterServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

@@ -1,0 +1,204 @@
+{
+  "info": {
+    "name": "Google Auth API",
+    "description": "Google OAuth 2.0 authentication endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Get Authorization URL",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/google/redirect",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "google", "redirect"]
+            },
+            "description": "Get the Google OAuth authorization URL. Copy the authorization_url from the response and open it in a browser to authenticate."
+          },
+          "response": []
+        },
+        {
+          "name": "OAuth Callback",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/google/callback?code=AUTHORIZATION_CODE&state=STATE_VALUE",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "google", "callback"],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "AUTHORIZATION_CODE",
+                  "description": "Authorization code from Google"
+                },
+                {
+                  "key": "state",
+                  "value": "STATE_VALUE",
+                  "description": "State parameter for CSRF protection"
+                }
+              ]
+            },
+            "description": "Handle OAuth callback. This endpoint is called by Google after user authorization. Replace AUTHORIZATION_CODE and STATE_VALUE with actual values from the redirect."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.success && response.data.token) {",
+                  "        pm.collectionVariables.set('token', response.data.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Google Profile",
+      "item": [
+        {
+          "name": "Get Google Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/google/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "google", "profile"]
+            },
+            "description": "Get the authenticated user's Google profile information including access token, refresh token, and profile data."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Access Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/google/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "google", "refresh"]
+            },
+            "description": "Refresh the Google access token using the stored refresh token. This is useful when the access token expires."
+          },
+          "response": []
+        },
+        {
+          "name": "Revoke Google Access",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/google/revoke",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "google", "revoke"]
+            },
+            "description": "Revoke Google access and unlink the Google account from the user. This will also revoke the token with Google."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user",
+              "host": ["{{base_url}}"],
+              "path": ["api", "user"]
+            },
+            "description": "Get the currently authenticated user's information."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

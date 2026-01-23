@@ -1,0 +1,55 @@
+{
+    "name": "eduardoks98/payment-mercadopago",
+    "description": "MercadoPago payment integration for Laravel using official SDK - supports PIX, credit/debit cards, and Boleto",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "mercadopago",
+        "payment",
+        "pix",
+        "boleto",
+        "credit-card",
+        "checkout",
+        "api"
+    ],
+    "authors": [
+        {
+            "name": "Eduardo Steffens",
+            "email": "eduardo@example.com",
+            "homepage": "https://github.com/eduardoks98"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2|^8.3",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/http": "^10.0|^11.0|^12.0",
+        "illuminate/database": "^10.0|^11.0|^12.0",
+        "mercadopago/dx-php": "^3.0",
+        "eduardoks98/base-api": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardoks98\\PaymentMercadoPago\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Eduardoks98\\PaymentMercadoPago\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduardoks98\\PaymentMercadoPago\\PaymentMercadoPagoServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

@@ -1,0 +1,168 @@
+{
+    "name": "eduardoks98/api-base-monorepo",
+    "description": "Backend API Base - Monorepo with reusable Laravel packages",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eduardo Steffens",
+            "email": "eduardoks98@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2",
+        "illuminate/support": "^10.0|^11.0|^12.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpunit/phpunit": "^10.0",
+        "laravel/pint": "^1.13",
+        "mockery/mockery": "^1.6"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./packages/core/base-api",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/core/helpers",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/core/security",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/core/rate-limiter",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/core/recaptcha",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/core/auth",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/core/performance",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/core/reverb",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/core/api-docs",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/core/health",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/auth/google",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/auth/facebook",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/auth/microsoft",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/payment/stripe",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/payment/mercadopago",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/payment/abacatepay",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/sms/twilio",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/sms/comtele",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/whatsapp/official",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/whatsapp/converx",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/storage/s3",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/storage/media-library",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/brazilian/geolocation",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/brazilian/email-validator",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/brazilian/banking",
+            "options": {"symlink": true}
+        }
+    ],
+    "autoload": {
+        "psr-4": {}
+    },
+    "scripts": {
+        "test": [
+            "@php vendor/bin/phpunit"
+        ],
+        "test:unit": [
+            "@php vendor/bin/phpunit --testsuite Unit"
+        ],
+        "test:feature": [
+            "@php vendor/bin/phpunit --testsuite Feature"
+        ],
+        "lint": [
+            "vendor/bin/pint"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
