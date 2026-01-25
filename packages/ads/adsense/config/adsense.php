@@ -65,18 +65,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Filament Integration
+    | Admin Panel Configuration
     |--------------------------------------------------------------------------
     |
-    | Configure Filament admin panel integration.
+    | Configure the admin panel routes and middleware.
     |
     */
-    'filament' => [
-        'enabled' => env('ADSENSE_FILAMENT_ENABLED', true),
-        'navigation_group' => 'Monetização',
-        'navigation_icon' => 'heroicon-o-rectangle-stack',
-        'navigation_sort' => 50,
-    ],
+    'admin_middleware' => ['web', 'auth'],
+    'admin_prefix' => 'admin',
+    'admin_layout' => 'layouts.admin',
 
     /*
     |--------------------------------------------------------------------------

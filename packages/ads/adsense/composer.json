@@ -1,6 +1,6 @@
 {
     "name": "eduardoks98/ads-adsense",
-    "description": "Google AdSense integration for Laravel web applications with Filament admin panel support",
+    "description": "Google AdSense integration for Laravel web applications with Blade admin interface",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -10,8 +10,7 @@
         "ads",
         "web-ads",
         "banner-ads",
-        "display-ads",
-        "filament"
+        "display-ads"
     ],
     "authors": [
         {
@@ -29,11 +28,9 @@
     "require-dev": {
         "orchestra/testbench": "^8.0|^9.0",
         "pestphp/pest": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0",
-        "filament/filament": "^3.0"
+        "pestphp/pest-plugin-laravel": "^2.0"
     },
     "suggest": {
-        "filament/filament": "Required for Filament admin panel integration (^3.0)",
         "google/apiclient": "Required for AdSense Management API integration (^2.0)"
     },
     "autoload": {

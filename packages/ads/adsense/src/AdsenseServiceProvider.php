@@ -29,6 +29,11 @@ class AdsenseServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'adsense');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/admin.php');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
         $this->publishes([
             __DIR__ . '/../config/adsense.php' => config_path('adsense.php'),
         ], 'adsense-config');
@@ -37,17 +42,14 @@ class AdsenseServiceProvider extends ServiceProvider
             __DIR__ . '/../database/migrations/' => database_path('migrations'),
         ], 'adsense-migrations');
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->publishes([
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/adsense'),
+        ], 'adsense-views');
 
-        $this->registerRoutes();
-    }
-
-    /**
-     * Register routes.
-     */
-    protected function registerRoutes(): void
-    {
-        $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+        $this->publishes([
+            __DIR__ . '/../resources/css' => public_path('vendor/adsense/css'),
+            __DIR__ . '/../resources/js' => public_path('vendor/adsense/js'),
+        ], 'adsense-assets');
     }
 
     /**
