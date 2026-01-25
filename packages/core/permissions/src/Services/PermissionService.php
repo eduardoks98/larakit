@@ -122,45 +122,6 @@ class PermissionService
     }
 
     /**
-     * Get permission options for Filament forms.
-     */
-    public function getPermissionOptionsForFilament(): array
-    {
-        $options = [];
-        $permissions = Permission::all();
-
-        foreach ($permissions as $permission) {
-            $options[$permission->id] = $permission->description ?? $permission->name;
-        }
-
-        return $options;
-    }
-
-    /**
-     * Get permission options grouped by module for Filament forms.
-     */
-    public function getPermissionOptionsGroupedForFilament(): array
-    {
-        $grouped = [];
-        $permissions = Permission::all();
-
-        foreach ($permissions as $permission) {
-            $module = $permission->module;
-            $moduleLabel = $this->getModuleLabel($module);
-
-            if (!isset($grouped[$moduleLabel])) {
-                $grouped[$moduleLabel] = [];
-            }
-
-            $grouped[$moduleLabel][$permission->id] = $permission->description ?? $permission->name;
-        }
-
-        ksort($grouped);
-
-        return $grouped;
-    }
-
-    /**
      * Get the label for a module.
      */
     public function getModuleLabel(string $module): string

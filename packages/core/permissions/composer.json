@@ -1,6 +1,6 @@
 {
     "name": "eduardoks98/permissions",
-    "description": "RBAC (Role-Based Access Control) permissions system for Laravel with Filament 3 integration",
+    "description": "RBAC (Role-Based Access Control) permissions system for Laravel with Blade admin interface",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -10,7 +10,6 @@
         "roles",
         "profiles",
         "access-control",
-        "filament",
         "authorization"
     ],
     "authors": [
@@ -29,11 +28,7 @@
     "require-dev": {
         "orchestra/testbench": "^8.0|^9.0",
         "pestphp/pest": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0",
-        "filament/filament": "^3.0"
-    },
-    "suggest": {
-        "filament/filament": "Required for Filament admin panel integration (^3.0)"
+        "pestphp/pest-plugin-laravel": "^2.0"
     },
     "autoload": {
         "psr-4": {

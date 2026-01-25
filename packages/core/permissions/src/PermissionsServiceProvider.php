@@ -27,6 +27,10 @@ class PermissionsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'permissions');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/admin.php');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
         $this->publishes([
             __DIR__ . '/../config/permissions.php' => config_path('permissions.php'),
         ], 'permissions-config');
@@ -35,7 +39,14 @@ class PermissionsServiceProvider extends ServiceProvider
             __DIR__ . '/../database/migrations/' => database_path('migrations'),
         ], 'permissions-migrations');
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->publishes([
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/permissions'),
+        ], 'permissions-views');
+
+        $this->publishes([
+            __DIR__ . '/../resources/css' => public_path('vendor/permissions/css'),
+            __DIR__ . '/../resources/js' => public_path('vendor/permissions/js'),
+        ], 'permissions-assets');
 
         $this->registerMiddleware();
         $this->registerCommands();
