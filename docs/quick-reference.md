@@ -8,7 +8,7 @@
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  📂 E:\                                                      │
-│  ├── 📁 api-base/              ← Seu monorepo (este)       │
+│  ├── 📁 larakit/              ← Seu monorepo (este)       │
 │  │   └── 📁 packages/                                       │
 │  │       ├── 📦 base-api/                                   │
 │  │       ├── 📦 helpers/                                    │
@@ -40,7 +40,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../api-base/packages/*",
+            "url": "../larakit/packages/*",
             "options": {"symlink": true}
         }
     ],
@@ -74,7 +74,7 @@
 ┌──────────────────────────────────────────────────────┐
 │  1️⃣ Push para GitHub                                 │
 ├──────────────────────────────────────────────────────┤
-│  $ cd E:\api-base                                    │
+│  $ cd E:\larakit                                    │
 │  $ git remote add origin git@github.com:...         │
 │  $ git push -u origin main                          │
 │  $ git push --tags                                  │
@@ -83,8 +83,8 @@
 ┌──────────────────────────────────────────────────────┐
 │  2️⃣ Uso em Qualquer Projeto                          │
 ├──────────────────────────────────────────────────────┤
-│  $ composer config repositories.api-base vcs \       │
-│    https://github.com/eduardoks98/api-base-monorepo │
+│  $ composer config repositories.larakit vcs \       │
+│    https://github.com/eduardoks98/larakit │
 │                                                       │
 │  $ composer require eduardoks98/base-api \           │
 │    eduardoks98/auth eduardoks98/helpers              │

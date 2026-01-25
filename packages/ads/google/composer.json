@@ -1,0 +1,55 @@
+{
+    "name": "eduardoks98/ads-google",
+    "description": "Google AdMob Server-Side Verification (SSV) for Laravel - Rewarded ads callback validation with ECDSA signature verification",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "admob",
+        "google-ads",
+        "ssv",
+        "rewarded-ads",
+        "server-side-verification",
+        "ecdsa",
+        "monetization"
+    ],
+    "authors": [
+        {
+            "name": "Eduardo Steffens",
+            "email": "eduardo@example.com",
+            "homepage": "https://github.com/eduardoks98"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2|^8.3",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/http": "^10.0|^11.0|^12.0",
+        "illuminate/cache": "^10.0|^11.0|^12.0",
+        "eduardoks98/base-api": "^1.0",
+        "eduardoks98/monetization": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardoks98\\AdsGoogle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Eduardoks98\\AdsGoogle\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduardoks98\\AdsGoogle\\AdsGoogleServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

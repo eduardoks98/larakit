@@ -96,7 +96,7 @@ return [
 
     'two_factor' => [
         'enabled' => env('TWO_FACTOR_ENABLED', false),
-        'issuer' => env('TWO_FACTOR_ISSUER', env('APP_NAME', 'API Base')),
+        'issuer' => env('TWO_FACTOR_ISSUER', env('APP_NAME', 'Larakit')),
         'digits' => 6,
         'period' => 30,
         'algorithm' => 'sha1',

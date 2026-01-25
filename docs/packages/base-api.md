@@ -7,7 +7,7 @@
 
 ## 📋 Visão Geral
 
-O package `base-api` é a fundação de todas as APIs construídas com o API Base Monorepo. Ele fornece:
+O package `base-api` é a fundação de todas as APIs construídas com o Larakit. Ele fornece:
 
 - **RFC 7807 Problem Details** - Respostas de erro padronizadas
 - **API Resources** - Transformação de dados estruturada

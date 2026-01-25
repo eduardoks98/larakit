@@ -1,6 +1,6 @@
 {
-    "name": "eduardoks98/api-base-monorepo",
-    "description": "Backend API Base - Monorepo with reusable Laravel packages",
+    "name": "eduardoks98/larakit",
+    "description": "Larakit - Monorepo with reusable Laravel packages",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -143,6 +143,41 @@
         {
             "type": "path",
             "url": "./packages/brazilian/banking",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/monetization/core",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/ads/google",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/ads/unity",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/ads/applovin",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/ads/facebook",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/core/permissions",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/ads/adsense",
             "options": {"symlink": true}
         }
     ],

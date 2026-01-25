@@ -72,7 +72,7 @@ return [
 
     '2fa' => [
         'enabled' => env('TWO_FACTOR_ENABLED', false),
-        'issuer' => env('APP_NAME', 'API Base'),
+        'issuer' => env('APP_NAME', 'Larakit'),
     ],
 ];
 ```

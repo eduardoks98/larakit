@@ -1,6 +1,6 @@
-# 🚀 API Base Monorepo - Documentação Completa
+# 🚀 Larakit - Documentação Completa
 
-Bem-vindo à documentação oficial do **API Base Monorepo** - uma coleção de packages Composer reutilizáveis para construir APIs REST modernas com Laravel 11/12.
+Bem-vindo à documentação oficial do **Larakit** - uma coleção de packages Composer reutilizáveis para construir APIs REST modernas com Laravel 11/12.
 
 ## 📚 Índice da Documentação
 
@@ -115,7 +115,7 @@ Esta documentação está em constante evolução. Sugestões são bem-vindas!
 
 ## 🔗 Links Úteis
 
-- [GitHub Repository](https://github.com/eduardoks98/api-base-monorepo)
+- [GitHub Repository](https://github.com/eduardoks98/larakit)
 - [Laravel Documentation](https://laravel.com/docs)
 - [Pest PHP](https://pestphp.com)
 - [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807)

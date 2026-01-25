@@ -36,7 +36,7 @@ return [
     'info' => [
         'title' => env('APP_NAME', 'API'),
         'version' => '1.0.0',
-        'description' => 'RESTful API built with eduardoks98/api-base',
+        'description' => 'RESTful API built with eduardoks98/larakit',
     ],
 
     'servers' => [

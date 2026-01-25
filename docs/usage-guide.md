@@ -1,4 +1,4 @@
-# 🚀 Guia de Uso - API Base Monorepo
+# 🚀 Guia de Uso - Larakit
 
 ## Como Usar os Packages Localmente
 
@@ -22,7 +22,7 @@ Edite o `composer.json` do seu projeto:
     "repositories": [
         {
             "type": "path",
-            "url": "../api-base/packages/*",
+            "url": "../larakit/packages/*",
             "options": {
                 "symlink": true
             }
@@ -59,7 +59,7 @@ php artisan migrate
 
 #### 5. Configure o .env
 
-Copie as configurações do `E:\api-base\.env.example` para o `.env` do seu projeto.
+Copie as configurações do `E:\larakit\.env.example` para o `.env` do seu projeto.
 
 ---
 
@@ -69,7 +69,7 @@ Depois de fazer o push para o GitHub:
 
 ```bash
 # 1. Adicione o repositório
-composer config repositories.api-base vcs https://github.com/eduardoks98/api-base-monorepo
+composer config repositories.larakit vcs https://github.com/eduardoks98/larakit
 
 # 2. Instale os packages
 composer require eduardoks98/base-api eduardoks98/auth eduardoks98/helpers
@@ -528,4 +528,4 @@ clearRateLimitForIp($request->ip());
 
 ---
 
-**Precisando de ajuda?** Veja [CONTRIBUTING.md](./CONTRIBUTING.md) ou abra uma [issue](https://github.com/eduardoks98/api-base-monorepo/issues)
+**Precisando de ajuda?** Veja [CONTRIBUTING.md](./CONTRIBUTING.md) ou abra uma [issue](https://github.com/eduardoks98/larakit/issues)

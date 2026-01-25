@@ -13,7 +13,22 @@
       "Bash(git tag:*)",
       "Bash(find:*)",
       "Bash(php -l:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(powershell -NoProfile -Command:*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File:*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File /tmp/replace.ps1 -FilePath 'e:\\\\api-base\\\\docs\\\\project-status.md')",
+      "Bash(git -C /e/api-base checkout:*)",
+      "Bash(git checkout:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell -Command \"Get-Content 'e:\\\\api-base\\\\packages\\\\core\\\\api-docs\\\\config\\\\scramble.php' -Raw -Encoding UTF8 | Select-String 'description' | Out-String\":*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -Command:*)",
+      "Bash(powershell -NoProfile -File - <<'PSEOF'\n$f = \"e:\\\\api-base\\\\packages\\\\core\\\\api-docs\\\\config\\\\scramble.php\"\n$c = Get-Content $f -Raw -Encoding UTF8\n$c = $c.Replace\\(\"eduardoks98/api-base packages\", \"Larakit packages\"\\)\n[System.IO.File]::WriteAllText\\($f, $c\\)\nWrite-Host \"scramble.php updated\"\nPSEOF)",
+      "Bash(powershell -NoProfile -File - <<'PSEOF'\n$f = \"e:\\\\api-base\\\\packages\\\\core\\\\auth\\\\config\\\\auth.php\"\n$c = Get-Content $f -Raw -Encoding UTF8\n$c = $c.Replace\\(\"'API Base'\", \"'Larakit'\"\\)\n[System.IO.File]::WriteAllText\\($f, $c\\)\nWrite-Host \"auth.php updated\"\nPSEOF)",
+      "Bash(powershell -NoProfile -File - <<'PSEOF'\n$f = 'e:\\\\api-base\\\\packages\\\\core\\\\api-docs\\\\config\\\\scramble.php'\n$content = Get-Content $f -Raw -Encoding UTF8\n$content = $content.Replace\\('RESTful API built with eduardoks98/api-base packages', 'RESTful API built with Larakit packages'\\)\n[System.IO.File]::WriteAllText\\($f, $content\\)\nWrite-Host \"Done: scramble.php\"\nPSEOF)",
+      "Bash(powershell -NoProfile -File -:*)",
+      "Bash(xargs:*)",
+      "Bash(composer validate:*)"
     ]
   }
 }

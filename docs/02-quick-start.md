@@ -1,6 +1,6 @@
 # ⚡ Quick Start
 
-Comece a usar o API Base em **menos de 5 minutos**!
+Comece a usar o Larakit em **menos de 5 minutos**!
 
 ## 🚀 Instalação Rápida
 
@@ -19,7 +19,7 @@ cd my-api
 ### 2. Adicionar Repositório
 
 ```bash
-composer config repositories.api-base vcs git@github.com:eduardoks98/api-base-monorepo.git
+composer config repositories.larakit vcs git@github.com:eduardoks98/larakit.git
 ```
 
 ### 3. Instalar Packages
@@ -284,7 +284,7 @@ it('requires authentication', function () {
 ## 🆘 Problemas?
 
 - [Troubleshooting](./reference/troubleshooting.md)
-- [GitHub Issues](https://github.com/eduardoks98/api-base-monorepo/issues)
+- [GitHub Issues](https://github.com/eduardoks98/larakit/issues)
 - Email: eduardoks98@gmail.com
 
 ---

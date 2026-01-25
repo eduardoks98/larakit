@@ -1,8 +1,8 @@
 # 📋 Visão Geral
 
-## O que é o API Base Monorepo?
+## O que é o Larakit?
 
-O **API Base Monorepo** é uma coleção de 10 packages Composer reutilizáveis criados para acelerar o desenvolvimento de APIs REST modernas com Laravel 11/12, seguindo as **melhores práticas de mercado 2024-2026**.
+O **Larakit** é uma coleção de 10 packages Composer reutilizáveis criados para acelerar o desenvolvimento de APIs REST modernas com Laravel 11/12, seguindo as **melhores práticas de mercado 2024-2026**.
 
 ## 🎯 Objetivos
 

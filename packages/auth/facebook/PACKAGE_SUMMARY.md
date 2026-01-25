@@ -16,7 +16,7 @@ Complete Facebook Login integration for Laravel using League OAuth2 Facebook and
 ### Package Structure
 
 ```
-E:\api-base\packages\facebook-auth\
+E:\larakit\packages\facebook-auth\
 ├── composer.json                                    # Package configuration
 ├── README.md                                        # Main documentation
 ├── QUICKSTART.md                                    # 5-minute setup guide

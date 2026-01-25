@@ -1,6 +1,6 @@
 # 📦 Instalação Completa
 
-Guia completo para instalar todos os packages do API Base Monorepo.
+Guia completo para instalar todos os packages do Larakit.
 
 ## 🎯 Cenários de Instalação
 
@@ -109,12 +109,12 @@ cd existing-project
 
 **Via SSH (Recomendado)**:
 ```bash
-composer config repositories.api-base vcs git@github.com:eduardoks98/api-base-monorepo.git
+composer config repositories.larakit vcs git@github.com:eduardoks98/larakit.git
 ```
 
 **Via HTTPS**:
 ```bash
-composer config repositories.api-base vcs https://github.com/eduardoks98/api-base-monorepo.git
+composer config repositories.larakit vcs https://github.com/eduardoks98/larakit.git
 ```
 
 ### 3. Instalar Packages

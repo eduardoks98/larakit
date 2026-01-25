@@ -1,4 +1,4 @@
-# 📊 Status da Implementação - API Base Monorepo
+# 📊 Status da Implementação - Larakit
 
 **Data**: 23 de Janeiro de 2026
 **Autor**: Eduardo Steffens (@eduardoks98)

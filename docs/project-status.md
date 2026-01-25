@@ -1,4 +1,4 @@
-# 🎉 API Base Monorepo - Status Final
+# 🎉 Larakit - Status Final
 
 **Data de Conclusão**: 23 de Janeiro de 2026
 **Versão**: 1.0.0
@@ -184,7 +184,7 @@ cd E:\meu-projeto
     "repositories": [
         {
             "type": "path",
-            "url": "../api-base/packages/*",
+            "url": "../larakit/packages/*",
             "options": {"symlink": true}
         }
     ],
@@ -203,7 +203,7 @@ composer update
 
 ```bash
 # Adicione o repositório
-composer config repositories.api-base vcs https://github.com/eduardoks98/api-base-monorepo
+composer config repositories.larakit vcs https://github.com/eduardoks98/larakit
 
 # Instale os packages
 composer require eduardoks98/base-api eduardoks98/auth eduardoks98/helpers
@@ -226,7 +226,7 @@ Para publicar este projeto no GitHub:
 
 ### 1. Criar Repositório
 ```bash
-gh repo create api-base-monorepo --public --source=. --remote=origin \
+gh repo create larakit --public --source=. --remote=origin \
   --description="Modern Laravel REST API packages with OWASP compliance, smart rate limiting, and Brazilian market utilities"
 ```
 
@@ -237,14 +237,14 @@ git push --tags
 ```
 
 ### 3. Criar Release no GitHub
-- Vá para: https://github.com/eduardoks98/api-base-monorepo/releases/new
+- Vá para: https://github.com/eduardoks98/larakit/releases/new
 - Tag: `v1.0.0`
-- Title: `🎉 API Base Monorepo v1.0.0 - Initial Release`
+- Title: `🎉 Larakit v1.0.0 - Initial Release`
 - Description: Copie conteúdo do [CHANGELOG.md](CHANGELOG.md)
 
 ### 4. Publicar no Packagist (Opcional)
 - https://packagist.org/packages/submit
-- Cole URL: https://github.com/eduardoks98/api-base-monorepo
+- Cole URL: https://github.com/eduardoks98/larakit
 - Ative GitHub Service Hook
 
 **Detalhes**: Ver [RELEASE-INSTRUCTIONS.md](RELEASE-INSTRUCTIONS.md)

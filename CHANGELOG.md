@@ -7,6 +7,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-01-25
+
+### Added - Ads & Monetization Packages
+
+#### Monetization Core
+- **eduardoks98/monetization** - Complete Monetization System
+  - Virtual currency management with transaction ledger
+  - Reward system with queue processing
+  - Ad impression tracking (provider-agnostic)
+  - Analytics service with caching
+  - Models: `AdImpression`, `Reward`, `VirtualCurrencyTransaction`
+  - Enums: `AdProvider`, `RewardStatus`, `RewardType`
+  - Trait: `HasVirtualCurrency` for User model
+  - Job: `FulfillRewardJob` for async reward processing
+  - 3 database migrations
+  - Global helpers: `monetization_balance()`, `monetization_credit()`, `monetization_debit()`, etc.
+
+#### Ad Provider Integrations
+- **eduardoks98/ads-google** - Google AdMob SSV
+  - Server-Side Verification for rewarded ads
+  - ECDSA signature verification
+  - Public key caching (24h rotation)
+  - Automatic reward processing
+  - Middleware: `VerifyAdMobSignature`
+  - Services: `AdMobSsvService`
+
+- **eduardoks98/ads-unity** - Unity Ads S2S
+  - Server-to-Server callback validation
+  - HMAC-MD5 signature verification
+  - Monetization Stats API integration
+  - Services: `UnityCallbackService`, `UnityStatsService`
+
+- **eduardoks98/ads-applovin** - AppLovin MAX
+  - S2S callback validation via event token
+  - User-Level Revenue Reporting API
+  - Mediation support (multi-network attribution)
+  - Services: `MaxCallbackService`, `MaxReportingService`
+
+- **eduardoks98/ads-facebook** - Facebook Audience Network
+  - Revenue reporting via Graph API
+  - Client-side reward endpoint (FAN doesn't have S2S)
+  - Insights and metrics parsing
+  - Services: `AudienceNetworkService`
+
+### Statistics v1.5.0
+- **New Packages**: 5 (1 monetization core + 4 ad providers)
+- **New Files**: ~60
+- **New Migrations**: 3
+- **New Models**: 3
+- **New Services**: 8
+- **New Enums**: 3
+
+---
+
 ## [1.0.0] - 2026-01-23
 
 ### 🎉 Initial Release
@@ -186,5 +240,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/eduardoks98/api-base-monorepo/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/eduardoks98/api-base-monorepo/releases/tag/v1.0.0
+[Unreleased]: https://github.com/eduardoks98/larakit/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/eduardoks98/larakit/releases/tag/v1.0.0

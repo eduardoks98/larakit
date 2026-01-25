@@ -1,4 +1,4 @@
-# Contribuindo para API Base Monorepo
+# Contribuindo para Larakit
 
 Obrigado por considerar contribuir para o projeto! 🎉
 
@@ -6,7 +6,7 @@ Obrigado por considerar contribuir para o projeto! 🎉
 
 ### Reportar Bugs
 
-1. Verifique se o bug já foi reportado em [Issues](https://github.com/eduardoks98/api-base-monorepo/issues)
+1. Verifique se o bug já foi reportado em [Issues](https://github.com/eduardoks98/larakit/issues)
 2. Se não, abra uma nova issue com:
    - Título claro e descritivo
    - Passos para reproduzir
@@ -16,7 +16,7 @@ Obrigado por considerar contribuir para o projeto! 🎉
 
 ### Sugerir Features
 
-1. Abra uma [Discussion](https://github.com/eduardoks98/api-base-monorepo/discussions)
+1. Abra uma [Discussion](https://github.com/eduardoks98/larakit/discussions)
 2. Descreva claramente:
    - O problema que a feature resolve
    - Sua solução proposta
@@ -165,7 +165,7 @@ Ao contribuir, você concorda que suas contribuições serão licenciadas sob a 
 
 ## 💬 Dúvidas?
 
-- Abra uma [Discussion](https://github.com/eduardoks98/api-base-monorepo/discussions)
+- Abra uma [Discussion](https://github.com/eduardoks98/larakit/discussions)
 - Entre em contato: eduardo@example.com
 
 ## 🙏 Agradecimentos

@@ -83,7 +83,7 @@ Eventos implementados conforme documentação oficial:
 ## File Structure
 
 ```
-E:\api-base\packages\payment-stripe\
+E:\larakit\packages\payment-stripe\
 ├── composer.json                        # stripe/stripe-php ^13.0
 ├── config\stripe.php                    # Real Stripe configuration
 ├── database\migrations\

@@ -1,4 +1,4 @@
-# 🗺️ Roadmap - API Base Monorepo
+# 🗺️ Roadmap - Larakit
 
 Este documento descreve o planejamento de versões futuras do projeto.
 
@@ -259,6 +259,63 @@ Este documento descreve o planejamento de versões futuras do projeto.
 
 ---
 
+## ✅ v1.5.0 - Ads & Monetization (COMPLETO - 25/01/2026)
+
+### Monetization Core
+- ✅ **eduardoks98/monetization** - Complete monetization system
+  - Virtual currency management
+  - Transaction ledger with balance tracking
+  - Reward system with queue processing
+  - Ad impression tracking (provider-agnostic)
+  - Analytics service with caching
+  - Models: AdImpression, Reward, VirtualCurrencyTransaction
+  - Enums: AdProvider, RewardStatus, RewardType
+  - Trait: HasVirtualCurrency for User model
+  - 3 database migrations
+  - 7 global helper functions
+
+### Ad Provider Integrations
+- ✅ **eduardoks98/ads-google** - Google AdMob SSV
+  - Server-Side Verification (SSV) for rewarded ads
+  - ECDSA signature verification
+  - Public key caching (24h rotation from Google)
+  - Automatic reward processing
+  - Middleware: VerifyAdMobSignature
+  - 12 arquivos
+
+- ✅ **eduardoks98/ads-unity** - Unity Ads S2S
+  - Server-to-Server callback validation
+  - HMAC-MD5 signature verification
+  - Monetization Stats API integration
+  - Player reward tracking
+  - 10 arquivos
+
+- ✅ **eduardoks98/ads-applovin** - AppLovin MAX
+  - S2S callback validation via event token
+  - User-Level Revenue Reporting API
+  - Mediation support (multi-network attribution)
+  - Country-level tracking
+  - 10 arquivos
+
+- ✅ **eduardoks98/ads-facebook** - Facebook Audience Network
+  - Revenue reporting via Graph API (v21.0)
+  - Client-side reward endpoint (FAN doesn't have S2S)
+  - Insights and metrics parsing
+  - Note: AdColony was not included (deprecated)
+  - 10 arquivos
+
+### Infrastructure v1.5.0
+- ✅ 5 novos packages (1 monetization + 4 ads)
+- ✅ ~60 arquivos criados
+- ✅ 3 migrations (ad_impressions, rewards, virtual_currency_transactions)
+- ✅ 8 services
+- ✅ 3 enums
+- ✅ Documentação completa (5 READMEs)
+- ✅ Production-ready
+- ✅ Baseado 100% em documentações oficiais
+
+---
+
 ## 🎯 v2.0.0 - GraphQL & Modern Architecture (Q2 2027)
 
 ### Breaking Changes
@@ -323,7 +380,7 @@ Este documento descreve o planejamento de versões futuras do projeto.
 ## 📊 Version Timeline
 
 ```
-2026 Q1: v1.0.0 ✅ + v1.1.0 ✅ + v1.2.0 ✅ + v1.3.0 ✅ + v1.4.0 ✅
+2026 Q1: v1.0.0 ✅ + v1.1.0 ✅ + v1.2.0 ✅ + v1.3.0 ✅ + v1.4.0 ✅ + v1.5.0 ✅
 2027 Q2: v2.0.0 (GraphQL + Breaking Changes)
 ```
 
@@ -333,7 +390,7 @@ Este documento descreve o planejamento de versões futuras do projeto.
 
 Tem ideias para novos packages?
 
-1. Abra uma [Discussion](https://github.com/eduardoks98/api-base-monorepo/discussions) no GitHub
+1. Abra uma [Discussion](https://github.com/eduardoks98/larakit/discussions) no GitHub
 2. Descreva o problema que o package resolveria
 3. Compartilhe casos de uso
 4. A comunidade vota e discute
@@ -351,6 +408,6 @@ Os packages mais votados entram no roadmap oficial!
 
 ---
 
-**Última atualização**: 24 de Janeiro de 2026
-**Versão atual**: v1.4.0
+**Última atualização**: 25 de Janeiro de 2026
+**Versão atual**: v1.5.0
 **Próximo release**: v2.0.0 (GraphQL + Modern Architecture)

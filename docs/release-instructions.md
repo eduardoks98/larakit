@@ -18,11 +18,11 @@
 
 ```bash
 # Opção A: Via GitHub CLI (recomendado)
-gh repo create api-base-monorepo --public --source=. --remote=origin --description="Modern Laravel REST API packages with OWASP compliance, smart rate limiting, and Brazilian market utilities"
+gh repo create larakit --public --source=. --remote=origin --description="Modern Laravel REST API packages with OWASP compliance, smart rate limiting, and Brazilian market utilities"
 
 # Opção B: Via web (https://github.com/new)
 # Depois adicionar remote manualmente:
-git remote add origin git@github.com:eduardoks98/api-base-monorepo.git
+git remote add origin git@github.com:eduardoks98/larakit.git
 ```
 
 ### 2. Push para GitHub
@@ -40,11 +40,11 @@ git push --tags
 
 ### 3. Criar Release no GitHub
 
-Vá para: `https://github.com/eduardoks98/api-base-monorepo/releases/new`
+Vá para: `https://github.com/eduardoks98/larakit/releases/new`
 
 **Tag**: `v1.0.0`
 
-**Release Title**: `🎉 API Base Monorepo v1.0.0 - Initial Release`
+**Release Title**: `🎉 Larakit v1.0.0 - Initial Release`
 
 **Description**: Copie o conteúdo de [CHANGELOG.md](./CHANGELOG.md) seção v1.0.0
 
@@ -55,7 +55,7 @@ Vá para: `https://github.com/eduardoks98/api-base-monorepo/releases/new`
 Se quiser tornar os packages públicos via Composer:
 
 1. Vá para [https://packagist.org/packages/submit](https://packagist.org/packages/submit)
-2. Cole a URL do repositório: `https://github.com/eduardoks98/api-base-monorepo`
+2. Cole a URL do repositório: `https://github.com/eduardoks98/larakit`
 3. Clique em "Check"
 4. Ative o GitHub Service Hook para auto-update
 
@@ -76,8 +76,8 @@ Eles rodarão automaticamente em:
 Adicione no topo do README.md:
 
 ```markdown
-[![Tests](https://github.com/eduardoks98/api-base-monorepo/workflows/Tests/badge.svg)](https://github.com/eduardoks98/api-base-monorepo/actions)
-[![Code Quality](https://github.com/eduardoks98/api-base-monorepo/workflows/Code%20Quality/badge.svg)](https://github.com/eduardoks98/api-base-monorepo/actions)
+[![Tests](https://github.com/eduardoks98/larakit/workflows/Tests/badge.svg)](https://github.com/eduardoks98/larakit/actions)
+[![Code Quality](https://github.com/eduardoks98/larakit/workflows/Code%20Quality/badge.svg)](https://github.com/eduardoks98/larakit/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![PHP](https://img.shields.io/badge/PHP-8.1%20|%208.2%20|%208.3-blue.svg)](https://php.net)
 [![Laravel](https://img.shields.io/badge/Laravel-10%20|%2011%20|%2012-orange.svg)](https://laravel.com)
@@ -136,7 +136,7 @@ git tag
 ### Adicionar Remote e Push
 ```bash
 # Se ainda não adicionou
-git remote add origin git@github.com:eduardoks98/api-base-monorepo.git
+git remote add origin git@github.com:eduardoks98/larakit.git
 
 # Push tudo
 git push -u origin main
@@ -192,7 +192,7 @@ Use o monorepo localmente em outros projetos Laravel:
     "repositories": [
         {
             "type": "path",
-            "url": "../api-base/packages/*"
+            "url": "../larakit/packages/*"
         }
     ],
     "require": {
@@ -205,7 +205,7 @@ Use o monorepo localmente em outros projetos Laravel:
 ### Para Uso Após Publicação
 ```bash
 # Adicionar repositório
-composer config repositories.api-base vcs https://github.com/eduardoks98/api-base-monorepo
+composer config repositories.larakit vcs https://github.com/eduardoks98/larakit
 
 # Instalar packages
 composer require eduardoks98/base-api eduardoks98/auth
@@ -218,7 +218,7 @@ composer require eduardoks98/base-api eduardoks98/auth
 ### Erro: "remote origin already exists"
 ```bash
 git remote remove origin
-git remote add origin git@github.com:eduardoks98/api-base-monorepo.git
+git remote add origin git@github.com:eduardoks98/larakit.git
 ```
 
 ### Erro: "Permission denied (publickey)"
