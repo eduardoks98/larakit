@@ -1,0 +1,56 @@
+{
+    "name": "eduardoks98/auth-discord",
+    "description": "Discord OAuth 2.0 Authentication for Laravel using League OAuth2 Discord Provider with Sanctum integration",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "discord",
+        "oauth",
+        "oauth2",
+        "authentication",
+        "discord-login",
+        "sanctum",
+        "league"
+    ],
+    "authors": [
+        {
+            "name": "Eduardo Steffens",
+            "email": "eduardo@example.com",
+            "homepage": "https://github.com/eduardoks98"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2|^8.3",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/http": "^10.0|^11.0|^12.0",
+        "illuminate/database": "^10.0|^11.0|^12.0",
+        "wohali/oauth2-discord-new": "^1.2",
+        "eduardoks98/base-api": "^1.0",
+        "eduardoks98/auth": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduardoks98\\DiscordAuth\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Eduardoks98\\DiscordAuth\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduardoks98\\DiscordAuth\\DiscordAuthServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
