@@ -15,20 +15,45 @@ use Illuminate\Support\Str;
 
 class MercadoPagoService
 {
-    protected OrderClient $orderClient;
-    protected PaymentClient $paymentClient;
+    protected ?OrderClient $orderClient = null;
+    protected ?PaymentClient $paymentClient = null;
     protected bool $loggingEnabled;
+    protected bool $configured = false;
 
     public function __construct()
     {
-        // Configure MercadoPago SDK
-        MercadoPagoConfig::setAccessToken(config('payment-mercadopago.access_token'));
+        $accessToken = config('payment-mercadopago.access_token');
 
-        // Initialize clients
-        $this->orderClient = new OrderClient();
-        $this->paymentClient = new PaymentClient();
+        // Only initialize if access token is configured
+        if (!empty($accessToken)) {
+            // Configure MercadoPago SDK
+            MercadoPagoConfig::setAccessToken($accessToken);
+
+            // Initialize clients
+            $this->orderClient = new OrderClient();
+            $this->paymentClient = new PaymentClient();
+            $this->configured = true;
+        }
 
         $this->loggingEnabled = config('payment-mercadopago.logging.enabled', false);
+    }
+
+    /**
+     * Check if MercadoPago is configured
+     */
+    public function isConfigured(): bool
+    {
+        return $this->configured;
+    }
+
+    /**
+     * Ensure MercadoPago is configured before making API calls
+     */
+    protected function ensureConfigured(): void
+    {
+        if (!$this->isConfigured()) {
+            throw new \RuntimeException('MercadoPago is not configured. Set MERCADOPAGO_ACCESS_TOKEN in .env');
+        }
     }
 
     /**
@@ -40,6 +65,7 @@ class MercadoPagoService
      */
     public function createPixPayment(array $data): MercadoPagoPayment
     {
+        $this->ensureConfigured();
         $externalReference = $data['external_reference'] ?? Str::uuid()->toString();
         $amount = (string) $data['amount'];
 
@@ -146,6 +172,7 @@ class MercadoPagoService
      */
     public function createCardPayment(array $data): MercadoPagoPayment
     {
+        $this->ensureConfigured();
         $externalReference = $data['external_reference'] ?? Str::uuid()->toString();
 
         $request = [
@@ -229,6 +256,7 @@ class MercadoPagoService
      */
     public function createBoletoPayment(array $data): MercadoPagoPayment
     {
+        $this->ensureConfigured();
         $externalReference = $data['external_reference'] ?? Str::uuid()->toString();
         $amount = (string) $data['amount'];
 
@@ -333,6 +361,7 @@ class MercadoPagoService
      */
     public function getPayment(string $paymentId): object
     {
+        $this->ensureConfigured();
         try {
             return $this->paymentClient->get($paymentId);
         } catch (MPApiException $e) {
@@ -355,6 +384,7 @@ class MercadoPagoService
      */
     public function refundPayment(string $paymentId, ?float $amount = null): object
     {
+        $this->ensureConfigured();
         try {
             $request = [];
             if ($amount !== null) {

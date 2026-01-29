@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Log;
  */
 class AbacatePayService
 {
-    protected BillingClient $billingClient;
-    protected CustomerClient $customerClient;
+    protected ?BillingClient $billingClient = null;
+    protected ?CustomerClient $customerClient = null;
+    protected bool $configured = false;
 
     /**
      * Initialize AbacatePay service with API token
@@ -28,16 +29,34 @@ class AbacatePayService
     {
         $token = $token ?? config('abacatepay.token');
 
-        if (!$token) {
-            throw new \InvalidArgumentException('AbacatePay token is required. Set ABACATEPAY_TOKEN in .env');
+        // Only initialize if token is configured and not a placeholder
+        if (!empty($token) && $token !== 'placeholder_configure_later') {
+            // Set token using official SDK method
+            Client::setToken($token);
+
+            // Initialize official SDK clients
+            $this->billingClient = new BillingClient();
+            $this->customerClient = new CustomerClient();
+            $this->configured = true;
         }
+    }
 
-        // Set token using official SDK method
-        Client::setToken($token);
+    /**
+     * Check if AbacatePay is configured
+     */
+    public function isConfigured(): bool
+    {
+        return $this->configured;
+    }
 
-        // Initialize official SDK clients
-        $this->billingClient = new BillingClient();
-        $this->customerClient = new CustomerClient();
+    /**
+     * Ensure AbacatePay is configured before making API calls
+     */
+    protected function ensureConfigured(): void
+    {
+        if (!$this->isConfigured()) {
+            throw new \RuntimeException('AbacatePay is not configured. Set ABACATEPAY_TOKEN in .env');
+        }
     }
 
     /**
@@ -49,6 +68,7 @@ class AbacatePayService
      */
     public function createBilling(BillingData $billingData, ?int $userId = null): array
     {
+        $this->ensureConfigured();
         try {
             // Convert to SDK Billing object
             $sdkBilling = $billingData->toSdkBilling();
@@ -80,6 +100,7 @@ class AbacatePayService
      */
     public function getBilling(string $billingId): array
     {
+        $this->ensureConfigured();
         try {
             return $this->billingClient->retrieve($billingId);
         } catch (\Exception $e) {
@@ -100,6 +121,7 @@ class AbacatePayService
      */
     public function listBillings(array $params = []): array
     {
+        $this->ensureConfigured();
         try {
             return $this->billingClient->list($params);
         } catch (\Exception $e) {
@@ -120,6 +142,7 @@ class AbacatePayService
      */
     public function createCustomer(array $customerData): array
     {
+        $this->ensureConfigured();
         try {
             return $this->customerClient->create($customerData);
         } catch (\Exception $e) {
@@ -140,6 +163,7 @@ class AbacatePayService
      */
     public function getCustomer(string $customerId): array
     {
+        $this->ensureConfigured();
         try {
             return $this->customerClient->retrieve($customerId);
         } catch (\Exception $e) {
@@ -159,6 +183,7 @@ class AbacatePayService
      */
     public function getBillingClient(): BillingClient
     {
+        $this->ensureConfigured();
         return $this->billingClient;
     }
 
@@ -169,6 +194,7 @@ class AbacatePayService
      */
     public function getCustomerClient(): CustomerClient
     {
+        $this->ensureConfigured();
         return $this->customerClient;
     }
 

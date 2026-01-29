@@ -19,14 +19,37 @@ use Illuminate\Support\Facades\Log;
  */
 class StripeService
 {
-    protected StripeClient $stripe;
+    protected ?StripeClient $stripe = null;
 
     public function __construct()
     {
-        $this->stripe = new StripeClient([
-            'api_key' => config('stripe.secret_key'),
-            'stripe_version' => config('stripe.api_version'),
-        ]);
+        $apiKey = config('stripe.secret_key');
+
+        // Only initialize Stripe client if API key is configured
+        if (!empty($apiKey)) {
+            $this->stripe = new StripeClient([
+                'api_key' => $apiKey,
+                'stripe_version' => config('stripe.api_version'),
+            ]);
+        }
+    }
+
+    /**
+     * Check if Stripe is configured
+     */
+    public function isConfigured(): bool
+    {
+        return $this->stripe !== null;
+    }
+
+    /**
+     * Ensure Stripe is configured before making API calls
+     */
+    protected function ensureConfigured(): void
+    {
+        if (!$this->isConfigured()) {
+            throw new \RuntimeException('Stripe is not configured. Set STRIPE_SECRET in .env');
+        }
     }
 
     /**
@@ -45,6 +68,7 @@ class StripeService
         string $currency = null,
         array $options = []
     ): StripePayment {
+        $this->ensureConfigured();
         $currency = $currency ?? config('stripe.currency', 'usd');
 
         // Build PaymentIntent parameters
@@ -92,6 +116,7 @@ class StripeService
      */
     public function retrievePaymentIntent(string $paymentIntentId): PaymentIntent
     {
+        $this->ensureConfigured();
         return $this->stripe->paymentIntents->retrieve($paymentIntentId);
     }
 
@@ -107,6 +132,7 @@ class StripeService
      */
     public function confirmPaymentIntent(string $paymentIntentId, array $options = []): StripePayment
     {
+        $this->ensureConfigured();
         try {
             $paymentIntent = $this->stripe->paymentIntents->confirm($paymentIntentId, $options);
 
@@ -136,6 +162,7 @@ class StripeService
      */
     public function cancelPaymentIntent(string $paymentIntentId, array $options = []): StripePayment
     {
+        $this->ensureConfigured();
         try {
             $paymentIntent = $this->stripe->paymentIntents->cancel($paymentIntentId, $options);
 
@@ -165,6 +192,7 @@ class StripeService
      */
     public function capturePaymentIntent(string $paymentIntentId, ?int $amountToCapture = null): StripePayment
     {
+        $this->ensureConfigured();
         try {
             $params = [];
             if ($amountToCapture !== null) {
@@ -199,6 +227,7 @@ class StripeService
      */
     public function updatePaymentIntent(string $paymentIntentId, array $params): StripePayment
     {
+        $this->ensureConfigured();
         try {
             $paymentIntent = $this->stripe->paymentIntents->update($paymentIntentId, $params);
 

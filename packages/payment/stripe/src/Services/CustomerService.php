@@ -19,14 +19,37 @@ use Illuminate\Support\Facades\Log;
  */
 class CustomerService
 {
-    protected StripeClient $stripe;
+    protected ?StripeClient $stripe = null;
 
     public function __construct()
     {
-        $this->stripe = new StripeClient([
-            'api_key' => config('stripe.secret_key'),
-            'stripe_version' => config('stripe.api_version'),
-        ]);
+        $apiKey = config('stripe.secret_key');
+
+        // Only initialize Stripe client if API key is configured
+        if (!empty($apiKey)) {
+            $this->stripe = new StripeClient([
+                'api_key' => $apiKey,
+                'stripe_version' => config('stripe.api_version'),
+            ]);
+        }
+    }
+
+    /**
+     * Check if Stripe is configured
+     */
+    public function isConfigured(): bool
+    {
+        return $this->stripe !== null;
+    }
+
+    /**
+     * Ensure Stripe is configured before making API calls
+     */
+    protected function ensureConfigured(): void
+    {
+        if (!$this->isConfigured()) {
+            throw new \RuntimeException('Stripe is not configured. Set STRIPE_SECRET in .env');
+        }
     }
 
     /**
@@ -40,6 +63,7 @@ class CustomerService
      */
     public function createCustomer(array $params): StripeCustomer
     {
+        $this->ensureConfigured();
         try {
             // Add default metadata
             if (!isset($params['metadata'])) {
@@ -72,6 +96,7 @@ class CustomerService
      */
     public function retrieveCustomer(string $customerId): Customer
     {
+        $this->ensureConfigured();
         return $this->stripe->customers->retrieve($customerId);
     }
 
@@ -87,6 +112,7 @@ class CustomerService
      */
     public function updateCustomer(string $customerId, array $params): StripeCustomer
     {
+        $this->ensureConfigured();
         try {
             $customer = $this->stripe->customers->update($customerId, $params);
 
@@ -115,6 +141,7 @@ class CustomerService
      */
     public function deleteCustomer(string $customerId): bool
     {
+        $this->ensureConfigured();
         try {
             $this->stripe->customers->delete($customerId);
 
@@ -145,6 +172,7 @@ class CustomerService
      */
     public function attachPaymentMethod(string $paymentMethodId, string $customerId): PaymentMethod
     {
+        $this->ensureConfigured();
         try {
             $paymentMethod = $this->stripe->paymentMethods->attach($paymentMethodId, [
                 'customer' => $customerId,
@@ -177,6 +205,7 @@ class CustomerService
      */
     public function detachPaymentMethod(string $paymentMethodId): PaymentMethod
     {
+        $this->ensureConfigured();
         try {
             $paymentMethod = $this->stripe->paymentMethods->detach($paymentMethodId);
 
@@ -204,6 +233,7 @@ class CustomerService
      */
     public function listPaymentMethods(string $customerId, string $type = 'card'): array
     {
+        $this->ensureConfigured();
         try {
             $paymentMethods = $this->stripe->customers->allPaymentMethods($customerId, [
                 'type' => $type,
@@ -229,6 +259,7 @@ class CustomerService
      */
     public function setDefaultPaymentMethod(string $customerId, string $paymentMethodId): StripeCustomer
     {
+        $this->ensureConfigured();
         try {
             $customer = $this->stripe->customers->update($customerId, [
                 'invoice_settings' => [

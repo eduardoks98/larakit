@@ -19,14 +19,37 @@ use Illuminate\Support\Facades\Log;
  */
 class SubscriptionService
 {
-    protected StripeClient $stripe;
+    protected ?StripeClient $stripe = null;
 
     public function __construct()
     {
-        $this->stripe = new StripeClient([
-            'api_key' => config('stripe.secret_key'),
-            'stripe_version' => config('stripe.api_version'),
-        ]);
+        $apiKey = config('stripe.secret_key');
+
+        // Only initialize Stripe client if API key is configured
+        if (!empty($apiKey)) {
+            $this->stripe = new StripeClient([
+                'api_key' => $apiKey,
+                'stripe_version' => config('stripe.api_version'),
+            ]);
+        }
+    }
+
+    /**
+     * Check if Stripe is configured
+     */
+    public function isConfigured(): bool
+    {
+        return $this->stripe !== null;
+    }
+
+    /**
+     * Ensure Stripe is configured before making API calls
+     */
+    protected function ensureConfigured(): void
+    {
+        if (!$this->isConfigured()) {
+            throw new \RuntimeException('Stripe is not configured. Set STRIPE_SECRET in .env');
+        }
     }
 
     /**
@@ -45,6 +68,7 @@ class SubscriptionService
         array $items,
         array $options = []
     ): StripeSubscription {
+        $this->ensureConfigured();
         try {
             // Build subscription parameters
             $params = array_merge([
@@ -93,6 +117,7 @@ class SubscriptionService
      */
     public function retrieveSubscription(string $subscriptionId): Subscription
     {
+        $this->ensureConfigured();
         return $this->stripe->subscriptions->retrieve($subscriptionId);
     }
 
@@ -108,6 +133,7 @@ class SubscriptionService
      */
     public function updateSubscription(string $subscriptionId, array $params): StripeSubscription
     {
+        $this->ensureConfigured();
         try {
             $subscription = $this->stripe->subscriptions->update($subscriptionId, $params);
 
@@ -137,6 +163,7 @@ class SubscriptionService
      */
     public function cancelSubscription(string $subscriptionId, bool $cancelAtPeriodEnd = false): StripeSubscription
     {
+        $this->ensureConfigured();
         try {
             if ($cancelAtPeriodEnd) {
                 // Cancel at period end (customer retains access until end of billing period)
@@ -174,6 +201,7 @@ class SubscriptionService
      */
     public function resumeSubscription(string $subscriptionId): StripeSubscription
     {
+        $this->ensureConfigured();
         try {
             $subscription = $this->stripe->subscriptions->update($subscriptionId, [
                 'cancel_at_period_end' => false,
@@ -205,6 +233,7 @@ class SubscriptionService
      */
     public function pauseSubscription(string $subscriptionId, string $behavior = 'mark_uncollectible'): StripeSubscription
     {
+        $this->ensureConfigured();
         try {
             $subscription = $this->stripe->subscriptions->update($subscriptionId, [
                 'pause_collection' => [
@@ -235,6 +264,7 @@ class SubscriptionService
      */
     public function unpauseSubscription(string $subscriptionId): StripeSubscription
     {
+        $this->ensureConfigured();
         try {
             $subscription = $this->stripe->subscriptions->update($subscriptionId, [
                 'pause_collection' => '',
@@ -268,6 +298,7 @@ class SubscriptionService
         string $newPriceId,
         array $options = []
     ): StripeSubscription {
+        $this->ensureConfigured();
         try {
             // Retrieve current subscription to get the subscription item ID
             $subscription = $this->stripe->subscriptions->retrieve($subscriptionId);
@@ -318,6 +349,7 @@ class SubscriptionService
      */
     public function listSubscriptions(string $customerId, array $params = []): array
     {
+        $this->ensureConfigured();
         try {
             $params['customer'] = $customerId;
 
