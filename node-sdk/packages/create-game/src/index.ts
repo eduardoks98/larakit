@@ -17,7 +17,7 @@ export interface CreateGameOptions {
 }
 
 export async function createGame(options: CreateGameOptions): Promise<void> {
-  const { projectName, gameCode, gameName, gamesAdminUrl, maxPlayers, includeBot } = options;
+  const { projectName } = options;
 
   const projectPath = path.resolve(process.cwd(), projectName);
 
