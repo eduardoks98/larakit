@@ -21,8 +21,14 @@
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/github": "^11.0.0",
+    "@semantic-release/npm": "^12.0.0",
+    "@semantic-release/release-notes-generator": "^14.0.0",
     "@types/inquirer": "^9.0.7",
-    "@types/fs-extra": "^11.0.4"
+    "@types/fs-extra": "^11.0.4",
+    "semantic-release": "^24.0.0",
+    "typescript": "^5.0.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

@@ -417,6 +417,92 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
+## NPM Packages (React/TypeScript)
+
+Alem dos pacotes Laravel, o Larakit tambem oferece pacotes NPM para projetos React/TypeScript.
+
+### Pacotes Disponiveis
+
+| Pacote | Descricao | Registry |
+|--------|-----------|----------|
+| `@eduardoks98/google-analytics` | Google Analytics 4 (GA4) | GitHub Packages |
+| `@eduardoks98/google-adsense` | Google AdSense | GitHub Packages |
+| `@eduardoks98/facebook-ads` | Facebook Pixel | GitHub Packages |
+| `@mysys/create-game` | CLI para criar jogos multiplayer | GitHub Packages |
+
+### Instalacao NPM
+
+```bash
+# Configurar GitHub Packages
+echo "@eduardoks98:registry=https://npm.pkg.github.com" >> .npmrc
+echo "@mysys:registry=https://npm.pkg.github.com" >> .npmrc
+
+# Instalar pacotes
+npm install @eduardoks98/google-analytics
+npm install @eduardoks98/google-adsense
+npm install @eduardoks98/facebook-ads
+
+# Criar novo jogo
+npx @mysys/create-game meu-jogo
+```
+
+### Exemplo: Google Analytics
+
+```tsx
+import { GoogleAnalyticsProvider, useAnalytics } from '@eduardoks98/google-analytics';
+
+<GoogleAnalyticsProvider measurementId="G-XXXXXXXXXX">
+  <App />
+</GoogleAnalyticsProvider>
+
+// Em componentes
+const analytics = useAnalytics();
+analytics.event('button_click', { button_name: 'cta' });
+```
+
+Ver documentacao completa em [packages/google/analytics/npm](./packages/google/analytics/npm).
+
+---
+
+## Convencao de Commits
+
+Este repositorio usa **semantic-release** para versionamento automatico dos pacotes NPM.
+
+### Formato
+
+```
+<tipo>: <descricao>
+```
+
+### Tipos e Releases
+
+| Tipo | Release | Exemplo |
+|------|---------|---------|
+| `fix:` | Patch (1.0.X) | `fix: corrigir tracking de eventos` |
+| `feat:` | Minor (1.X.0) | `feat: adicionar suporte a custom events` |
+| `BREAKING CHANGE:` | Major (X.0.0) | Mudanca incompativel no body |
+| `docs:` | Nenhum | Documentacao |
+| `chore:` | Nenhum | Manutencao |
+
+### Exemplos
+
+```bash
+# Patch (1.0.0 -> 1.0.1)
+git commit -m "fix: corrigir inicializacao do GA4"
+
+# Minor (1.0.0 -> 1.1.0)
+git commit -m "feat: adicionar hook useMatchTracking"
+
+# Major (1.0.0 -> 2.0.0)
+git commit -m "feat: redesign da API
+
+BREAKING CHANGE: metodo trackEvent renomeado para event"
+```
+
+Ver [CONTRIBUTING.md](./CONTRIBUTING.md) para mais detalhes.
+
+---
+
 ## Author
 
 **Eduardo Steffens** ([@eduardoks98](https://github.com/eduardoks98))
@@ -424,5 +510,5 @@ MIT License - see [LICENSE](LICENSE) for details.
 ---
 
 <p align="center">
-  Made with care for the Laravel community
+  Made with care for the Laravel and React communities
 </p>

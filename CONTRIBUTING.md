@@ -79,16 +79,53 @@ vendor/bin/pest
 
 ## 📝 Convenção de Commits
 
-Usamos [Conventional Commits](https://www.conventionalcommits.org/):
+Usamos [Conventional Commits](https://www.conventionalcommits.org/) com **semantic-release** para versionamento automatico dos pacotes NPM.
 
+### Tipos e Releases
+
+| Tipo | Release NPM | Descricao |
+|------|-------------|-----------|
+| `fix:` | Patch (1.0.X) | Correcao de bug |
+| `feat:` | Minor (1.X.0) | Nova funcionalidade |
+| `BREAKING CHANGE:` | Major (X.0.0) | Mudanca incompativel |
+| `docs:` | Nenhum | Documentacao |
+| `refactor:` | Nenhum | Refatoracao |
+| `test:` | Nenhum | Testes |
+| `chore:` | Nenhum | Manutencao |
+
+### Exemplos
+
+```bash
+# Patch release (1.0.0 -> 1.0.1)
+git commit -m "fix: corrigir tracking duplicado no GA4"
+
+# Minor release (1.0.0 -> 1.1.0)
+git commit -m "feat: adicionar hook useMatchTracking"
+
+# Major release (1.0.0 -> 2.0.0)
+git commit -m "feat: redesenhar API de eventos
+
+BREAKING CHANGE: O metodo trackEvent foi renomeado para event()"
+
+# Sem release
+git commit -m "docs: atualizar exemplos de uso"
+git commit -m "chore: atualizar dependencias"
 ```
-feat: adiciona suporte a GraphQL
-fix: corrige validação de CPF
-docs: atualiza README com exemplos
-refactor: melhora performance do rate limiter
-test: adiciona testes para auth controller
-chore: atualiza dependências
+
+### Escopo (Opcional)
+
+```bash
+git commit -m "fix(analytics): corrigir inicializacao do GA4"
+git commit -m "feat(adsense): adicionar componente StickyAd"
+git commit -m "docs(facebook): documentar eventos de conversao"
 ```
+
+### Dicas para o Claude
+
+1. **Sempre use prefixos**: `fix:`, `feat:`, `docs:`, etc.
+2. **Seja especifico**: "corrigir tracking duplicado" > "corrigir bug"
+3. **Use escopo** quando modificar um pacote especifico
+4. **Documente BREAKING CHANGE** quando mudar API publica
 
 ## 📦 Estrutura de Packages
 
