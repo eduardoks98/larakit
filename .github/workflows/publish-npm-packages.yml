@@ -24,12 +24,15 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -47,9 +50,10 @@ jobs:
         run: |
           npm install
           npx tsup src/index.ts --format cjs,esm --dts
-          npm publish --access public || echo "Package may already exist at this version"
+          npx semantic-release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Publish @eduardoks98/google-adsense
       - name: Publish @eduardoks98/google-adsense
@@ -60,9 +64,10 @@ jobs:
         run: |
           npm install
           npx tsup src/index.ts --format cjs,esm --dts
-          npm publish --access public || echo "Package may already exist at this version"
+          npx semantic-release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Publish @eduardoks98/facebook-ads
       - name: Publish @eduardoks98/facebook-ads
@@ -73,6 +78,7 @@ jobs:
         run: |
           npm install
           npx tsup src/index.ts --format cjs,esm --dts
-          npm publish --access public || echo "Package may already exist at this version"
+          npx semantic-release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

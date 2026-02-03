@@ -1,0 +1,4 @@
+{
+  "extends": "../../../../.releaserc.base.json",
+  "tagFormat": "facebook-ads-v${version}"
+}

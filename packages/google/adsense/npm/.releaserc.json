@@ -1,0 +1,4 @@
+{
+  "extends": "../../../../.releaserc.base.json",
+  "tagFormat": "google-adsense-v${version}"
+}
