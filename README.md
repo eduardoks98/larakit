@@ -428,14 +428,13 @@ Alem dos pacotes Laravel, o Larakit tambem oferece pacotes NPM para projetos Rea
 | `@eduardoks98/google-analytics` | Google Analytics 4 (GA4) | GitHub Packages |
 | `@eduardoks98/google-adsense` | Google AdSense | GitHub Packages |
 | `@eduardoks98/facebook-ads` | Facebook Pixel | GitHub Packages |
-| `@mysys/create-game` | CLI para criar jogos multiplayer | GitHub Packages |
+| `@eduardoks98/create-game` | CLI para criar jogos multiplayer | GitHub Packages |
 
 ### Instalacao NPM
 
 ```bash
 # Configurar GitHub Packages
 echo "@eduardoks98:registry=https://npm.pkg.github.com" >> .npmrc
-echo "@mysys:registry=https://npm.pkg.github.com" >> .npmrc
 
 # Instalar pacotes
 npm install @eduardoks98/google-analytics
@@ -443,7 +442,7 @@ npm install @eduardoks98/google-adsense
 npm install @eduardoks98/facebook-ads
 
 # Criar novo jogo
-npx @mysys/create-game meu-jogo
+npx @eduardoks98/create-game meu-jogo
 ```
 
 ### Exemplo: Google Analytics

@@ -88,8 +88,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Publish @mysys/create-game
-      - name: Publish @mysys/create-game
+      # Publish @eduardoks98/create-game
+      - name: Publish @eduardoks98/create-game
         if: |
           github.event_name == 'push' ||
           (github.event_name == 'workflow_dispatch' && (github.event.inputs.package == 'create-game' || github.event.inputs.package == 'all'))

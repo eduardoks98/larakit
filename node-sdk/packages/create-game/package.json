@@ -1,5 +1,5 @@
 {
-  "name": "@mysys/create-game",
+  "name": "@eduardoks98/create-game",
   "version": "1.0.0",
   "description": "CLI para criar novos jogos MySys",
   "bin": {
