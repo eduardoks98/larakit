@@ -46,7 +46,7 @@ jobs:
         working-directory: packages/google/analytics/npm
         run: |
           npm install
-          npm run build
+          npx tsup src/index.ts --format cjs,esm --dts
           npm publish --access public || echo "Package may already exist at this version"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -59,7 +59,7 @@ jobs:
         working-directory: packages/google/adsense/npm
         run: |
           npm install
-          npm run build
+          npx tsup src/index.ts --format cjs,esm --dts
           npm publish --access public || echo "Package may already exist at this version"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,7 +72,7 @@ jobs:
         working-directory: packages/facebook/ads/npm
         run: |
           npm install
-          npm run build
+          npx tsup src/index.ts --format cjs,esm --dts
           npm publish --access public || echo "Package may already exist at this version"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
