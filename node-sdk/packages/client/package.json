@@ -1,0 +1,65 @@
+{
+  "name": "@mysys/game-sdk-client",
+  "version": "1.0.0",
+  "description": "SDK para frontend de jogos MySys (React)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./providers": {
+      "types": "./dist/providers/index.d.ts",
+      "import": "./dist/providers/index.js"
+    },
+    "./hooks": {
+      "types": "./dist/hooks/index.d.ts",
+      "import": "./dist/hooks/index.js"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@mysys/game-sdk-shared": "^1.0.0",
+    "socket.io-client": "^4.7.2"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eduardoks98/larakit.git",
+    "directory": "node-sdk/packages/client"
+  },
+  "keywords": [
+    "mysys",
+    "game",
+    "sdk",
+    "client",
+    "react",
+    "socket.io"
+  ],
+  "author": "MySys",
+  "license": "MIT"
+}

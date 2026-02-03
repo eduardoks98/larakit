@@ -1,0 +1,44 @@
+{
+  "name": "@eduardoks98/facebook-ads",
+  "version": "1.0.0",
+  "description": "Facebook Pixel and Ads integration for React/TypeScript applications",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "facebook-pixel",
+    "facebook-ads",
+    "meta-pixel",
+    "react",
+    "typescript",
+    "larakit"
+  ],
+  "author": "Eduardo Steffens <eduardoks98@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eduardoks98/larakit",
+    "directory": "packages/facebook/ads/npm"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "react": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}

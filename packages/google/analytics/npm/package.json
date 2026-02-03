@@ -1,0 +1,47 @@
+{
+  "name": "@eduardoks98/google-analytics",
+  "version": "1.0.0",
+  "description": "Google Analytics 4 (GA4) integration for React/TypeScript applications with game-specific tracking",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "lint": "eslint src/",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "google-analytics",
+    "ga4",
+    "gtag",
+    "react",
+    "typescript",
+    "analytics",
+    "game-analytics",
+    "larakit"
+  ],
+  "author": "Eduardo Steffens <eduardoks98@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eduardoks98/larakit",
+    "directory": "packages/google/analytics/npm"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "react": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}

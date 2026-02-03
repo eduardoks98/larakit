@@ -1,0 +1,43 @@
+{
+  "name": "@mysys/create-game",
+  "version": "1.0.0",
+  "description": "CLI para criar novos jogos MySys",
+  "bin": {
+    "create-game": "./dist/bin/create-game.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.6",
+    "fs-extra": "^11.2.0"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@types/fs-extra": "^11.0.4"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eduardoks98/larakit.git",
+    "directory": "node-sdk/packages/create-game"
+  },
+  "keywords": [
+    "mysys",
+    "game",
+    "cli",
+    "scaffolding"
+  ],
+  "author": "MySys",
+  "license": "MIT"
+}

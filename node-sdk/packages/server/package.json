@@ -1,0 +1,70 @@
+{
+  "name": "@mysys/game-sdk-server",
+  "version": "1.0.0",
+  "description": "SDK para backend de jogos MySys (Node.js + Express + Socket.IO)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./auth": {
+      "types": "./dist/auth/index.d.ts",
+      "import": "./dist/auth/index.js"
+    },
+    "./socket": {
+      "types": "./dist/socket/index.d.ts",
+      "import": "./dist/socket/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "prisma",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@mysys/game-sdk-shared": "^1.0.0",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "jsonwebtoken": "^9.0.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/cors": "^2.8.17"
+  },
+  "peerDependencies": {
+    "@prisma/client": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@prisma/client": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eduardoks98/larakit.git",
+    "directory": "node-sdk/packages/server"
+  },
+  "keywords": [
+    "mysys",
+    "game",
+    "sdk",
+    "server",
+    "socket.io",
+    "express"
+  ],
+  "author": "MySys",
+  "license": "MIT"
+}

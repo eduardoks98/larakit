@@ -1,0 +1,78 @@
+name: Publish NPM Packages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'packages/**/npm/**'
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package to publish (google-analytics, google-adsense, facebook-ads, or all)'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - google-analytics
+          - google-adsense
+          - facebook-ads
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@eduardoks98'
+
+      # Publish @eduardoks98/google-analytics
+      - name: Publish @eduardoks98/google-analytics
+        if: |
+          github.event_name == 'push' ||
+          (github.event_name == 'workflow_dispatch' && (github.event.inputs.package == 'google-analytics' || github.event.inputs.package == 'all'))
+        working-directory: packages/google/analytics/npm
+        run: |
+          npm install
+          npm run build
+          npm publish --access public || echo "Package may already exist at this version"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Publish @eduardoks98/google-adsense
+      - name: Publish @eduardoks98/google-adsense
+        if: |
+          github.event_name == 'push' ||
+          (github.event_name == 'workflow_dispatch' && (github.event.inputs.package == 'google-adsense' || github.event.inputs.package == 'all'))
+        working-directory: packages/google/adsense/npm
+        run: |
+          npm install
+          npm run build
+          npm publish --access public || echo "Package may already exist at this version"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Publish @eduardoks98/facebook-ads
+      - name: Publish @eduardoks98/facebook-ads
+        if: |
+          github.event_name == 'push' ||
+          (github.event_name == 'workflow_dispatch' && (github.event.inputs.package == 'facebook-ads' || github.event.inputs.package == 'all'))
+        working-directory: packages/facebook/ads/npm
+        run: |
+          npm install
+          npm run build
+          npm publish --access public || echo "Package may already exist at this version"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
