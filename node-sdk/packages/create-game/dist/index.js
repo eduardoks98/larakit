@@ -1,75 +1,59 @@
+"use strict";
 // ==========================================
 // CREATE GAME
 // Funcao principal para criar novo jogo
 // Baseado na estrutura do Buckshot Roulette
 // ==========================================
-
-import fs from 'fs-extra';
-import path from 'path';
-import chalk from 'chalk';
-
-export interface CreateGameOptions {
-  projectName: string;
-  gameCode: string;
-  gameName: string;
-  gamesAdminUrl: string;
-  maxPlayers: number;
-  includeBot: boolean;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createGame = createGame;
+const fs_extra_1 = __importDefault(require("fs-extra"));
+const path_1 = __importDefault(require("path"));
+const chalk_1 = __importDefault(require("chalk"));
+async function createGame(options) {
+    const { projectName } = options;
+    const projectPath = path_1.default.resolve(process.cwd(), projectName);
+    // Verificar se diretorio ja existe
+    if (await fs_extra_1.default.pathExists(projectPath)) {
+        throw new Error(`Diretorio "${projectName}" ja existe`);
+    }
+    // Criar estrutura de diretorios
+    await fs_extra_1.default.ensureDir(projectPath);
+    console.log(chalk_1.default.gray('  Criando estrutura de diretorios...'));
+    // Criar arquivos raiz
+    await createRootFiles(projectPath, options);
+    // Criar client
+    await createClient(projectPath, options);
+    // Criar server
+    await createServer(projectPath, options);
+    // Criar shared
+    await createShared(projectPath, options);
 }
-
-export async function createGame(options: CreateGameOptions): Promise<void> {
-  const { projectName } = options;
-
-  const projectPath = path.resolve(process.cwd(), projectName);
-
-  // Verificar se diretorio ja existe
-  if (await fs.pathExists(projectPath)) {
-    throw new Error(`Diretorio "${projectName}" ja existe`);
-  }
-
-  // Criar estrutura de diretorios
-  await fs.ensureDir(projectPath);
-
-  console.log(chalk.gray('  Criando estrutura de diretorios...'));
-
-  // Criar arquivos raiz
-  await createRootFiles(projectPath, options);
-
-  // Criar client
-  await createClient(projectPath, options);
-
-  // Criar server
-  await createServer(projectPath, options);
-
-  // Criar shared
-  await createShared(projectPath, options);
-}
-
-async function createRootFiles(projectPath: string, options: CreateGameOptions): Promise<void> {
-  const { projectName, gameCode, gameName, gamesAdminUrl } = options;
-
-  // package.json
-  await fs.writeJson(path.join(projectPath, 'package.json'), {
-    name: projectName,
-    version: '1.0.0',
-    private: true,
-    workspaces: ['src/client', 'src/server', 'src/shared'],
-    scripts: {
-      dev: 'concurrently "npm run dev:server" "npm run dev:client"',
-      'dev:client': 'npm run dev -w src/client',
-      'dev:server': 'npm run dev -w src/server',
-      build: 'npm run build --workspaces',
-      'db:migrate': 'npm run db:migrate -w src/server',
-      'db:push': 'npm run db:push -w src/server',
-      'db:studio': 'npm run db:studio -w src/server',
-    },
-    devDependencies: {
-      concurrently: '^8.2.2',
-    },
-  }, { spaces: 2 });
-
-  // .env.example
-  await fs.writeFile(path.join(projectPath, '.env.example'), `# Jogo
+async function createRootFiles(projectPath, options) {
+    const { projectName, gameCode, gameName, gamesAdminUrl } = options;
+    // package.json
+    await fs_extra_1.default.writeJson(path_1.default.join(projectPath, 'package.json'), {
+        name: projectName,
+        version: '1.0.0',
+        private: true,
+        workspaces: ['src/client', 'src/server', 'src/shared'],
+        scripts: {
+            dev: 'concurrently "npm run dev:server" "npm run dev:client"',
+            'dev:client': 'npm run dev -w src/client',
+            'dev:server': 'npm run dev -w src/server',
+            build: 'npm run build --workspaces',
+            'db:migrate': 'npm run db:migrate -w src/server',
+            'db:push': 'npm run db:push -w src/server',
+            'db:studio': 'npm run db:studio -w src/server',
+        },
+        devDependencies: {
+            concurrently: '^8.2.2',
+        },
+    }, { spaces: 2 });
+    // .env.example
+    await fs_extra_1.default.writeFile(path_1.default.join(projectPath, '.env.example'), `# Jogo
 GAME_CODE=${gameCode}
 GAME_NAME="${gameName}"
 
@@ -90,18 +74,16 @@ VITE_API_URL=http://localhost:3001
 VITE_GAME_CODE=${gameCode}
 VITE_GAMES_ADMIN_URL=${gamesAdminUrl}
 `);
-
-  // .gitignore
-  await fs.writeFile(path.join(projectPath, '.gitignore'), `node_modules/
+    // .gitignore
+    await fs_extra_1.default.writeFile(path_1.default.join(projectPath, '.gitignore'), `node_modules/
 dist/
 .env
 .env.local
 *.log
 .DS_Store
 `);
-
-  // README.md
-  await fs.writeFile(path.join(projectPath, 'README.md'), `# ${gameName}
+    // README.md
+    await fs_extra_1.default.writeFile(path_1.default.join(projectPath, 'README.md'), `# ${gameName}
 
 Jogo multiplayer desenvolvido com MySys Game SDK.
 
@@ -134,44 +116,41 @@ O login e integrado com o Portal (games-admin) via Google OAuth.
 Os usuarios fazem login uma vez no portal e podem jogar qualquer jogo.
 `);
 }
-
-async function createClient(projectPath: string, options: CreateGameOptions): Promise<void> {
-  const clientPath = path.join(projectPath, 'src', 'client');
-  await fs.ensureDir(path.join(clientPath, 'src', 'pages'));
-  await fs.ensureDir(path.join(clientPath, 'src', 'components', 'game'));
-  await fs.ensureDir(path.join(clientPath, 'src', 'components', 'common'));
-  await fs.ensureDir(path.join(clientPath, 'src', 'hooks'));
-  await fs.ensureDir(path.join(clientPath, 'src', 'context'));
-  await fs.ensureDir(path.join(clientPath, 'src', 'services'));
-  await fs.ensureDir(path.join(clientPath, 'src', 'styles'));
-
-  // package.json
-  await fs.writeJson(path.join(clientPath, 'package.json'), {
-    name: `@${options.projectName}/client`,
-    private: true,
-    type: 'module',
-    scripts: {
-      dev: 'vite',
-      build: 'tsc && vite build',
-      preview: 'vite preview',
-    },
-    dependencies: {
-      react: '^18.2.0',
-      'react-dom': '^18.2.0',
-      'react-router-dom': '^6.20.0',
-      'socket.io-client': '^4.7.2',
-    },
-    devDependencies: {
-      '@types/react': '^18.2.45',
-      '@types/react-dom': '^18.2.18',
-      '@vitejs/plugin-react': '^4.2.1',
-      typescript: '^5.3.0',
-      vite: '^5.0.0',
-    },
-  }, { spaces: 2 });
-
-  // vite.config.ts
-  await fs.writeFile(path.join(clientPath, 'vite.config.ts'), `import { defineConfig } from 'vite';
+async function createClient(projectPath, options) {
+    const clientPath = path_1.default.join(projectPath, 'src', 'client');
+    await fs_extra_1.default.ensureDir(path_1.default.join(clientPath, 'src', 'pages'));
+    await fs_extra_1.default.ensureDir(path_1.default.join(clientPath, 'src', 'components', 'game'));
+    await fs_extra_1.default.ensureDir(path_1.default.join(clientPath, 'src', 'components', 'common'));
+    await fs_extra_1.default.ensureDir(path_1.default.join(clientPath, 'src', 'hooks'));
+    await fs_extra_1.default.ensureDir(path_1.default.join(clientPath, 'src', 'context'));
+    await fs_extra_1.default.ensureDir(path_1.default.join(clientPath, 'src', 'services'));
+    await fs_extra_1.default.ensureDir(path_1.default.join(clientPath, 'src', 'styles'));
+    // package.json
+    await fs_extra_1.default.writeJson(path_1.default.join(clientPath, 'package.json'), {
+        name: `@${options.projectName}/client`,
+        private: true,
+        type: 'module',
+        scripts: {
+            dev: 'vite',
+            build: 'tsc && vite build',
+            preview: 'vite preview',
+        },
+        dependencies: {
+            react: '^18.2.0',
+            'react-dom': '^18.2.0',
+            'react-router-dom': '^6.20.0',
+            'socket.io-client': '^4.7.2',
+        },
+        devDependencies: {
+            '@types/react': '^18.2.45',
+            '@types/react-dom': '^18.2.18',
+            '@vitejs/plugin-react': '^4.2.1',
+            typescript: '^5.3.0',
+            vite: '^5.0.0',
+        },
+    }, { spaces: 2 });
+    // vite.config.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(clientPath, 'vite.config.ts'), `import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
@@ -186,34 +165,32 @@ export default defineConfig({
   },
 });
 `);
-
-  // tsconfig.json
-  await fs.writeJson(path.join(clientPath, 'tsconfig.json'), {
-    compilerOptions: {
-      target: 'ES2020',
-      useDefineForClassFields: true,
-      lib: ['ES2020', 'DOM', 'DOM.Iterable'],
-      module: 'ESNext',
-      skipLibCheck: true,
-      moduleResolution: 'bundler',
-      allowImportingTsExtensions: true,
-      resolveJsonModule: true,
-      isolatedModules: true,
-      noEmit: true,
-      jsx: 'react-jsx',
-      strict: true,
-      noUnusedLocals: true,
-      noUnusedParameters: true,
-      noFallthroughCasesInSwitch: true,
-      paths: {
-        '@/*': ['./src/*'],
-      },
-    },
-    include: ['src'],
-  }, { spaces: 2 });
-
-  // index.html
-  await fs.writeFile(path.join(clientPath, 'index.html'), `<!DOCTYPE html>
+    // tsconfig.json
+    await fs_extra_1.default.writeJson(path_1.default.join(clientPath, 'tsconfig.json'), {
+        compilerOptions: {
+            target: 'ES2020',
+            useDefineForClassFields: true,
+            lib: ['ES2020', 'DOM', 'DOM.Iterable'],
+            module: 'ESNext',
+            skipLibCheck: true,
+            moduleResolution: 'bundler',
+            allowImportingTsExtensions: true,
+            resolveJsonModule: true,
+            isolatedModules: true,
+            noEmit: true,
+            jsx: 'react-jsx',
+            strict: true,
+            noUnusedLocals: true,
+            noUnusedParameters: true,
+            noFallthroughCasesInSwitch: true,
+            paths: {
+                '@/*': ['./src/*'],
+            },
+        },
+        include: ['src'],
+    }, { spaces: 2 });
+    // index.html
+    await fs_extra_1.default.writeFile(path_1.default.join(clientPath, 'index.html'), `<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -226,9 +203,8 @@ export default defineConfig({
   </body>
 </html>
 `);
-
-  // main.tsx
-  await fs.writeFile(path.join(clientPath, 'src', 'main.tsx'), `import React from 'react';
+    // main.tsx
+    await fs_extra_1.default.writeFile(path_1.default.join(clientPath, 'src', 'main.tsx'), `import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { SocketProvider } from './context/SocketContext';
@@ -245,9 +221,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>
 );
 `);
-
-  // App.tsx
-  await fs.writeFile(path.join(clientPath, 'src', 'App.tsx'), `import { Routes, Route } from 'react-router-dom';
+    // App.tsx
+    await fs_extra_1.default.writeFile(path_1.default.join(clientPath, 'src', 'App.tsx'), `import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Game from './pages/Game';
 
@@ -262,9 +237,8 @@ function App() {
 
 export default App;
 `);
-
-  // context/SocketContext.tsx
-  await fs.writeFile(path.join(clientPath, 'src', 'context', 'SocketContext.tsx'), `import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+    // context/SocketContext.tsx
+    await fs_extra_1.default.writeFile(path_1.default.join(clientPath, 'src', 'context', 'SocketContext.tsx'), `import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 interface SocketContextType {
@@ -345,9 +319,8 @@ export function useSocket() {
   return useContext(SocketContext);
 }
 `);
-
-  // pages/Home.tsx
-  await fs.writeFile(path.join(clientPath, 'src', 'pages', 'Home.tsx'), `import { useSocket } from '../context/SocketContext';
+    // pages/Home.tsx
+    await fs_extra_1.default.writeFile(path_1.default.join(clientPath, 'src', 'pages', 'Home.tsx'), `import { useSocket } from '../context/SocketContext';
 
 export default function Home() {
   const { connected, user } = useSocket();
@@ -388,9 +361,8 @@ export default function Home() {
   );
 }
 `);
-
-  // pages/Game.tsx
-  await fs.writeFile(path.join(clientPath, 'src', 'pages', 'Game.tsx'), `import { useParams } from 'react-router-dom';
+    // pages/Game.tsx
+    await fs_extra_1.default.writeFile(path_1.default.join(clientPath, 'src', 'pages', 'Game.tsx'), `import { useParams } from 'react-router-dom';
 import { useSocket } from '../context/SocketContext';
 
 export default function Game() {
@@ -414,9 +386,8 @@ export default function Game() {
   );
 }
 `);
-
-  // styles/global.css
-  await fs.writeFile(path.join(clientPath, 'src', 'styles', 'global.css'), `* {
+    // styles/global.css
+    await fs_extra_1.default.writeFile(path_1.default.join(clientPath, 'src', 'styles', 'global.css'), `* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -485,9 +456,8 @@ body {
   padding: 2rem;
 }
 `);
-
-  // vite-env.d.ts
-  await fs.writeFile(path.join(clientPath, 'src', 'vite-env.d.ts'), `/// <reference types="vite/client" />
+    // vite-env.d.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(clientPath, 'src', 'vite-env.d.ts'), `/// <reference types="vite/client" />
 
 interface ImportMetaEnv {
   readonly VITE_API_URL: string;
@@ -500,77 +470,72 @@ interface ImportMeta {
 }
 `);
 }
-
-async function createServer(projectPath: string, options: CreateGameOptions): Promise<void> {
-  const serverPath = path.join(projectPath, 'src', 'server');
-  await fs.ensureDir(path.join(serverPath, 'src', 'socket'));
-  await fs.ensureDir(path.join(serverPath, 'src', 'services'));
-  await fs.ensureDir(path.join(serverPath, 'src', 'services', 'game'));
-  await fs.ensureDir(path.join(serverPath, 'prisma'));
-
-  // package.json
-  await fs.writeJson(path.join(serverPath, 'package.json'), {
-    name: `@${options.projectName}/server`,
-    version: '1.0.0',
-    private: true,
-    main: 'dist/index.js',
-    scripts: {
-      dev: 'nodemon src/index.ts',
-      build: 'tsc',
-      start: 'node dist/index.js',
-      'db:migrate': 'prisma migrate dev',
-      'db:push': 'prisma db push',
-      'db:studio': 'prisma studio',
-      'db:generate': 'prisma generate',
-    },
-    dependencies: {
-      '@prisma/client': '^5.8.0',
-      cors: '^2.8.5',
-      dotenv: '^16.3.1',
-      express: '^4.18.2',
-      jsonwebtoken: '^9.0.2',
-      'socket.io': '^4.7.2',
-    },
-    devDependencies: {
-      '@types/cors': '^2.8.17',
-      '@types/express': '^4.17.21',
-      '@types/jsonwebtoken': '^9.0.5',
-      '@types/node': '^20.10.6',
-      nodemon: '^3.0.2',
-      prisma: '^5.8.0',
-      'ts-node': '^10.9.2',
-      typescript: '^5.3.3',
-    },
-  }, { spaces: 2 });
-
-  // tsconfig.json
-  await fs.writeJson(path.join(serverPath, 'tsconfig.json'), {
-    compilerOptions: {
-      target: 'ES2022',
-      module: 'commonjs',
-      lib: ['ES2022'],
-      outDir: './dist',
-      rootDir: './src',
-      strict: true,
-      esModuleInterop: true,
-      skipLibCheck: true,
-      forceConsistentCasingInFileNames: true,
-      resolveJsonModule: true,
-      declaration: true,
-    },
-    include: ['src/**/*'],
-    exclude: ['node_modules', 'dist'],
-  }, { spaces: 2 });
-
-  // nodemon.json
-  await fs.writeJson(path.join(serverPath, 'nodemon.json'), {
-    watch: ['src'],
-    ext: 'ts',
-    exec: 'ts-node src/index.ts',
-  }, { spaces: 2 });
-
-  // src/index.ts
-  await fs.writeFile(path.join(serverPath, 'src', 'index.ts'), `import 'dotenv/config';
+async function createServer(projectPath, options) {
+    const serverPath = path_1.default.join(projectPath, 'src', 'server');
+    await fs_extra_1.default.ensureDir(path_1.default.join(serverPath, 'src', 'socket'));
+    await fs_extra_1.default.ensureDir(path_1.default.join(serverPath, 'src', 'services'));
+    await fs_extra_1.default.ensureDir(path_1.default.join(serverPath, 'src', 'services', 'game'));
+    await fs_extra_1.default.ensureDir(path_1.default.join(serverPath, 'prisma'));
+    // package.json
+    await fs_extra_1.default.writeJson(path_1.default.join(serverPath, 'package.json'), {
+        name: `@${options.projectName}/server`,
+        version: '1.0.0',
+        private: true,
+        main: 'dist/index.js',
+        scripts: {
+            dev: 'nodemon src/index.ts',
+            build: 'tsc',
+            start: 'node dist/index.js',
+            'db:migrate': 'prisma migrate dev',
+            'db:push': 'prisma db push',
+            'db:studio': 'prisma studio',
+            'db:generate': 'prisma generate',
+        },
+        dependencies: {
+            '@prisma/client': '^5.8.0',
+            cors: '^2.8.5',
+            dotenv: '^16.3.1',
+            express: '^4.18.2',
+            jsonwebtoken: '^9.0.2',
+            'socket.io': '^4.7.2',
+        },
+        devDependencies: {
+            '@types/cors': '^2.8.17',
+            '@types/express': '^4.17.21',
+            '@types/jsonwebtoken': '^9.0.5',
+            '@types/node': '^20.10.6',
+            nodemon: '^3.0.2',
+            prisma: '^5.8.0',
+            'ts-node': '^10.9.2',
+            typescript: '^5.3.3',
+        },
+    }, { spaces: 2 });
+    // tsconfig.json
+    await fs_extra_1.default.writeJson(path_1.default.join(serverPath, 'tsconfig.json'), {
+        compilerOptions: {
+            target: 'ES2022',
+            module: 'commonjs',
+            lib: ['ES2022'],
+            outDir: './dist',
+            rootDir: './src',
+            strict: true,
+            esModuleInterop: true,
+            skipLibCheck: true,
+            forceConsistentCasingInFileNames: true,
+            resolveJsonModule: true,
+            declaration: true,
+        },
+        include: ['src/**/*'],
+        exclude: ['node_modules', 'dist'],
+    }, { spaces: 2 });
+    // nodemon.json
+    await fs_extra_1.default.writeJson(path_1.default.join(serverPath, 'nodemon.json'), {
+        watch: ['src'],
+        ext: 'ts',
+        exec: 'ts-node src/index.ts',
+    }, { spaces: 2 });
+    // src/index.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(serverPath, 'src', 'index.ts'), `import 'dotenv/config';
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -619,9 +584,8 @@ httpServer.listen(PORT, () => {
   console.log(\`Game: \${process.env.GAME_CODE || '${options.gameCode}'}\`);
 });
 `);
-
-  // src/socket/auth.handler.ts
-  await fs.writeFile(path.join(serverPath, 'src', 'socket', 'auth.handler.ts'), `import { Socket } from 'socket.io';
+    // src/socket/auth.handler.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(serverPath, 'src', 'socket', 'auth.handler.ts'), `import { Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../index';
 
@@ -690,9 +654,8 @@ async function findOrCreateUser(payload: JwtPayload) {
   return user;
 }
 `);
-
-  // src/socket/game.handler.ts
-  await fs.writeFile(path.join(serverPath, 'src', 'socket', 'game.handler.ts'), `import { Socket } from 'socket.io';
+    // src/socket/game.handler.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(serverPath, 'src', 'socket', 'game.handler.ts'), `import { Socket } from 'socket.io';
 
 export function registerGameHandler(socket: Socket) {
   socket.on('game:action', (data, callback) => {
@@ -708,9 +671,8 @@ export function registerGameHandler(socket: Socket) {
   });
 }
 `);
-
-  // src/socket/room.handler.ts
-  await fs.writeFile(path.join(serverPath, 'src', 'socket', 'room.handler.ts'), `import { Socket } from 'socket.io';
+    // src/socket/room.handler.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(serverPath, 'src', 'socket', 'room.handler.ts'), `import { Socket } from 'socket.io';
 
 export function registerRoomHandler(socket: Socket) {
   socket.on('room:create', (data, callback) => {
@@ -729,9 +691,8 @@ export function registerRoomHandler(socket: Socket) {
   });
 }
 `);
-
-  // prisma/schema.prisma - Baseado no Buckshot
-  await fs.writeFile(path.join(serverPath, 'prisma', 'schema.prisma'), `// ==========================================
+    // prisma/schema.prisma - Baseado no Buckshot
+    await fs_extra_1.default.writeFile(path_1.default.join(serverPath, 'prisma', 'schema.prisma'), `// ==========================================
 // PRISMA SCHEMA - ${options.gameName.toUpperCase()}
 // Padronizado estilo Laravel (snake_case)
 // ==========================================
@@ -873,32 +834,27 @@ model GameParticipant {
 }
 `);
 }
-
-async function createShared(projectPath: string, options: CreateGameOptions): Promise<void> {
-  const sharedPath = path.join(projectPath, 'src', 'shared');
-  await fs.ensureDir(path.join(sharedPath, 'src', 'types'));
-  await fs.ensureDir(path.join(sharedPath, 'src', 'constants'));
-
-  // package.json
-  await fs.writeJson(path.join(sharedPath, 'package.json'), {
-    name: `@${options.projectName}/shared`,
-    private: true,
-    main: 'src/index.ts',
-    types: 'src/index.ts',
-  }, { spaces: 2 });
-
-  // index.ts
-  await fs.writeFile(path.join(sharedPath, 'src', 'index.ts'), `export * from './types';
+async function createShared(projectPath, options) {
+    const sharedPath = path_1.default.join(projectPath, 'src', 'shared');
+    await fs_extra_1.default.ensureDir(path_1.default.join(sharedPath, 'src', 'types'));
+    await fs_extra_1.default.ensureDir(path_1.default.join(sharedPath, 'src', 'constants'));
+    // package.json
+    await fs_extra_1.default.writeJson(path_1.default.join(sharedPath, 'package.json'), {
+        name: `@${options.projectName}/shared`,
+        private: true,
+        main: 'src/index.ts',
+        types: 'src/index.ts',
+    }, { spaces: 2 });
+    // index.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(sharedPath, 'src', 'index.ts'), `export * from './types';
 export * from './constants';
 `);
-
-  // types/index.ts
-  await fs.writeFile(path.join(sharedPath, 'src', 'types', 'index.ts'), `export * from './game.types';
+    // types/index.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(sharedPath, 'src', 'types', 'index.ts'), `export * from './game.types';
 export * from './socket-events.types';
 `);
-
-  // types/game.types.ts
-  await fs.writeFile(path.join(sharedPath, 'src', 'types', 'game.types.ts'), `// ==========================================
+    // types/game.types.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(sharedPath, 'src', 'types', 'game.types.ts'), `// ==========================================
 // GAME TYPES - ${options.gameName.toUpperCase()}
 // ==========================================
 
@@ -926,9 +882,8 @@ export interface GameState {
   // TODO: Adicionar campos especificos do jogo
 }
 `);
-
-  // types/socket-events.types.ts
-  await fs.writeFile(path.join(sharedPath, 'src', 'types', 'socket-events.types.ts'), `// ==========================================
+    // types/socket-events.types.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(sharedPath, 'src', 'types', 'socket-events.types.ts'), `// ==========================================
 // SOCKET EVENTS - ${options.gameName.toUpperCase()}
 // ==========================================
 
@@ -995,13 +950,11 @@ export interface GameResult {
   // TODO: Definir resultado do jogo
 }
 `);
-
-  // constants/index.ts
-  await fs.writeFile(path.join(sharedPath, 'src', 'constants', 'index.ts'), `export * from './game-config';
+    // constants/index.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(sharedPath, 'src', 'constants', 'index.ts'), `export * from './game-config';
 `);
-
-  // constants/game-config.ts
-  await fs.writeFile(path.join(sharedPath, 'src', 'constants', 'game-config.ts'), `// ==========================================
+    // constants/game-config.ts
+    await fs_extra_1.default.writeFile(path_1.default.join(sharedPath, 'src', 'constants', 'game-config.ts'), `// ==========================================
 // GAME CONFIG - ${options.gameName.toUpperCase()}
 // ==========================================
 
@@ -1027,3 +980,4 @@ export const TIERS = [
 export type Tier = typeof TIERS[number];
 `);
 }
+//# sourceMappingURL=index.js.map
