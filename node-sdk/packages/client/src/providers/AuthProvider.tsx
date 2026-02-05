@@ -1,18 +1,23 @@
 // ==========================================
 // AUTH PROVIDER
-// Context de autenticação com games-admin
+// Context de autenticacao com games-admin
+// Token via httpOnly cookie (NAO em URL)
 // ==========================================
 
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
 import type { AuthUser, AuthProvider as AuthProviderType, AuthState, AuthActions } from '@mysys/game-sdk-shared';
 
+// Chave do localStorage para backup do token (fallback)
 const TOKEN_KEY = 'mysys_token';
 
+// Nome do cookie SSO
+const COOKIE_NAME = 'mysys_token';
+
 export interface AuthConfig {
-  /** URL do games-admin */
+  /** URL do games-admin (portal) */
   authUrl: string;
 
-  /** Código do jogo */
+  /** Codigo do jogo */
   gameCode: string;
 
   /** Chave do Reverb para sync (opcional) */
@@ -20,11 +25,37 @@ export interface AuthConfig {
 
   /** Host do Reverb (opcional) */
   reverbHost?: string;
+
+  /** Dominio do cookie (ex: .mysys.shop) */
+  cookieDomain?: string;
 }
 
-interface AuthContextValue extends AuthState, AuthActions {}
+interface AuthContextValue extends AuthState, AuthActions {
+  /** Se e admin */
+  isAdmin: boolean;
+}
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+/**
+ * Le um cookie pelo nome
+ */
+function getCookie(name: string): string | null {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift() || null;
+  }
+  return null;
+}
+
+/**
+ * Remove um cookie
+ */
+function deleteCookie(name: string, domain?: string): void {
+  const domainPart = domain ? `; domain=${domain}` : '';
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${domainPart}`;
+}
 
 export function AuthProvider({
   children,
@@ -40,11 +71,59 @@ export function AuthProvider({
     token: null,
     error: null,
   });
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Carregar token do localStorage no início
+  // Ref para BroadcastChannel (sync entre abas)
+  const broadcastChannel = useRef<BroadcastChannel | null>(null);
+
+  // Inicializar BroadcastChannel para sync entre abas
   useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY);
+    try {
+      broadcastChannel.current = new BroadcastChannel(`mysys_auth_${config.gameCode}`);
+
+      broadcastChannel.current.onmessage = (event) => {
+        if (event.data.type === 'LOGOUT') {
+          // Outra aba fez logout, limpar estado local
+          setState({
+            isAuthenticated: false,
+            isLoading: false,
+            user: null,
+            token: null,
+            error: null,
+          });
+          setIsAdmin(false);
+        } else if (event.data.type === 'LOGIN') {
+          // Outra aba fez login, revalidar
+          const token = getCookie(COOKIE_NAME) || localStorage.getItem(TOKEN_KEY);
+          if (token) {
+            validateToken(token);
+          }
+        }
+      };
+    } catch {
+      // BroadcastChannel nao suportado
+    }
+
+    return () => {
+      broadcastChannel.current?.close();
+    };
+  }, [config.gameCode]);
+
+  // Carregar token no inicio
+  // Prioridade: 1. Cookie httpOnly, 2. localStorage (fallback)
+  useEffect(() => {
+    // Verificar se veio de OAuth callback (token via cookie, NAO URL)
+    // O games-admin agora seta o cookie httpOnly no redirect
+    const cookieToken = getCookie(COOKIE_NAME);
+    const localToken = localStorage.getItem(TOKEN_KEY);
+
+    const token = cookieToken || localToken;
+
     if (token) {
+      // Sincronizar localStorage com cookie
+      if (cookieToken && !localToken) {
+        localStorage.setItem(TOKEN_KEY, cookieToken);
+      }
       validateToken(token);
     } else {
       setState(prev => ({ ...prev, isLoading: false }));
@@ -62,11 +141,15 @@ export function AuthProvider({
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
+          credentials: 'include', // Incluir cookies
         }
       );
 
       if (!response.ok) {
+        // Token invalido, limpar tudo
         localStorage.removeItem(TOKEN_KEY);
+        deleteCookie(COOKIE_NAME, config.cookieDomain);
+
         setState({
           isAuthenticated: false,
           isLoading: false,
@@ -74,10 +157,14 @@ export function AuthProvider({
           token: null,
           error: null,
         });
+        setIsAdmin(false);
         return false;
       }
 
       const data = await response.json();
+
+      // Salvar token no localStorage como backup
+      localStorage.setItem(TOKEN_KEY, token);
 
       setState({
         isAuthenticated: true,
@@ -86,6 +173,7 @@ export function AuthProvider({
         token,
         error: null,
       });
+      setIsAdmin(data.isAdmin || false);
 
       return true;
     } catch (error) {
@@ -97,14 +185,20 @@ export function AuthProvider({
         token: null,
         error: 'Failed to validate token',
       });
+      setIsAdmin(false);
       return false;
     }
-  }, [config.authUrl, config.gameCode]);
+  }, [config.authUrl, config.gameCode, config.cookieDomain]);
 
   // Login com provider OAuth
+  // IMPORTANTE: Token vira via httpOnly cookie, NAO em URL
   const loginWithProvider = useCallback((provider: AuthProviderType) => {
-    const redirectUrl = encodeURIComponent(window.location.origin + '/auth/callback');
-    const authUrl = `${config.authUrl}/api/games/${config.gameCode}/auth/${provider}/redirect?redirect_url=${redirectUrl}`;
+    // URL de retorno apos OAuth (SEM token na URL)
+    const returnUrl = encodeURIComponent(window.location.origin + '/lobby');
+
+    // Redirecionar para games-admin
+    // O games-admin vai setar o cookie httpOnly e redirecionar de volta
+    const authUrl = `${config.authUrl}/login?source=${config.gameCode}&return_url=${returnUrl}&provider=${provider}`;
     window.location.href = authUrl;
   }, [config.authUrl, config.gameCode]);
 
@@ -118,6 +212,7 @@ export function AuthProvider({
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include', // Receber cookie
           body: JSON.stringify({ email, password }),
         }
       );
@@ -129,15 +224,22 @@ export function AuthProvider({
 
       const data = await response.json();
 
-      localStorage.setItem(TOKEN_KEY, data.token);
+      // Salvar token no localStorage como backup
+      if (data.token) {
+        localStorage.setItem(TOKEN_KEY, data.token);
+      }
 
       setState({
         isAuthenticated: true,
         isLoading: false,
         user: data.user,
-        token: data.token,
+        token: data.token || null,
         error: null,
       });
+      setIsAdmin(data.isAdmin || false);
+
+      // Notificar outras abas
+      broadcastChannel.current?.postMessage({ type: 'LOGIN' });
     } catch (error) {
       setState(prev => ({
         ...prev,
@@ -157,6 +259,7 @@ export function AuthProvider({
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify({ email, password, username }),
         }
       );
@@ -168,15 +271,19 @@ export function AuthProvider({
 
       const data = await response.json();
 
-      localStorage.setItem(TOKEN_KEY, data.token);
+      if (data.token) {
+        localStorage.setItem(TOKEN_KEY, data.token);
+      }
 
       setState({
         isAuthenticated: true,
         isLoading: false,
         user: data.user,
-        token: data.token,
+        token: data.token || null,
         error: null,
       });
+
+      broadcastChannel.current?.postMessage({ type: 'LOGIN' });
     } catch (error) {
       setState(prev => ({
         ...prev,
@@ -189,22 +296,28 @@ export function AuthProvider({
   // Logout
   const logout = useCallback(async () => {
     try {
-      if (state.token) {
-        await fetch(
-          `${config.authUrl}/api/games/${config.gameCode}/auth/logout`,
-          {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${state.token}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-      }
+      // Chamar API de logout (vai invalidar token no servidor)
+      await fetch(
+        `${config.authUrl}/api/games/${config.gameCode}/auth/logout`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': state.token ? `Bearer ${state.token}` : '',
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        }
+      );
     } catch {
-      // Ignorar erros de logout
+      // Ignorar erros de logout (continuar limpeza local)
     } finally {
+      // Limpar localStorage
       localStorage.removeItem(TOKEN_KEY);
+
+      // Limpar cookie (se acessivel)
+      deleteCookie(COOKIE_NAME, config.cookieDomain);
+
+      // Atualizar estado
       setState({
         isAuthenticated: false,
         isLoading: false,
@@ -212,8 +325,12 @@ export function AuthProvider({
         token: null,
         error: null,
       });
+      setIsAdmin(false);
+
+      // Notificar outras abas
+      broadcastChannel.current?.postMessage({ type: 'LOGOUT' });
     }
-  }, [config.authUrl, config.gameCode, state.token]);
+  }, [config.authUrl, config.gameCode, config.cookieDomain, state.token]);
 
   // Atualizar nickname
   const updateNickname = useCallback(async (nickname: string) => {
@@ -227,6 +344,7 @@ export function AuthProvider({
           'Authorization': `Bearer ${state.token}`,
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ nickname }),
       }
     );
@@ -244,12 +362,13 @@ export function AuthProvider({
 
   const value: AuthContextValue = {
     ...state,
+    isAdmin,
     loginWithProvider,
     loginWithEmail,
     register,
     logout,
     updateNickname,
-    validateToken: () => validateToken(state.token || ''),
+    validateToken: () => validateToken(state.token || getCookie(COOKIE_NAME) || ''),
   };
 
   return (
@@ -266,3 +385,6 @@ export function useAuthContext(): AuthContextValue {
   }
   return context;
 }
+
+// Alias para compatibilidade
+export const useAuth = useAuthContext;

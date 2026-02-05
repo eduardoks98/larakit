@@ -68,6 +68,12 @@ export interface TokenValidationResult {
 
   /** Erro (se inválido) */
   error?: string;
+
+  /** Se é um token de admin */
+  isAdmin?: boolean;
+
+  /** Timestamp do último logout (para invalidar tokens antigos) */
+  loggedOutAt?: number;
 }
 
 /**
@@ -85,6 +91,28 @@ export interface AuthConfig {
 
   /** Tempo de expiração do token em segundos */
   tokenExpiration?: number;
+
+  /** API Key para comunicação server-to-server com games-admin */
+  apiKey?: string;
+
+  /** Domínio do cookie SSO (ex: .mysys.shop) */
+  cookieDomain?: string;
+
+  /** Se o cookie deve ser secure (HTTPS only) */
+  cookieSecure?: boolean;
+
+  /** Nome do cookie SSO */
+  cookieName?: string;
+}
+
+/**
+ * Cache entry para validação de token
+ */
+export interface TokenCacheEntry {
+  valid: boolean;
+  timestamp: number;
+  user?: AuthUser;
+  isAdmin?: boolean;
 }
 
 /**
