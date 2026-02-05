@@ -143,4 +143,16 @@ return [
     */
 
     'prompt' => env('GOOGLE_PROMPT', 'select_account'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | SSL Verification
+    |--------------------------------------------------------------------------
+    |
+    | In local development on Windows, SSL verification may fail.
+    | Set to false only in local development environment.
+    |
+    */
+
+    'verify_ssl' => env('GOOGLE_VERIFY_SSL', true),
 ];

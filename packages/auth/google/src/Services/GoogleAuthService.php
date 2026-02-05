@@ -20,11 +20,19 @@ class GoogleAuthService
      */
     public function __construct()
     {
-        $this->provider = new Google([
+        $options = [
             'clientId' => config('google-auth.client_id'),
             'clientSecret' => config('google-auth.client_secret'),
             'redirectUri' => config('google-auth.redirect_uri'),
-        ]);
+        ];
+
+        // Allow disabling SSL verification for local development (Windows)
+        $verifySsl = config('google-auth.verify_ssl');
+        if ($verifySsl === false || $verifySsl === 'false') {
+            $options['httpClient'] = new \GuzzleHttp\Client(['verify' => false]);
+        }
+
+        $this->provider = new Google($options);
     }
 
     /**
