@@ -48,6 +48,9 @@
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        },
         "laravel": {
             "providers": [
                 "Eduardoks98\\Auth\\AuthServiceProvider"
