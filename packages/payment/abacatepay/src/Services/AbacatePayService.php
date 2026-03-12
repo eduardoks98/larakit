@@ -2,9 +2,9 @@
 
 namespace Eduardoks98\PaymentAbacatePay\Services;
 
-use AbacatePay\Client;
-use AbacatePay\BillingClient;
-use AbacatePay\CustomerClient;
+use AbacatePay\Clients\Client;
+use AbacatePay\Clients\BillingClient;
+use AbacatePay\Clients\CustomerClient;
 use Eduardoks98\PaymentAbacatePay\Models\BillingData;
 use Eduardoks98\PaymentAbacatePay\Models\AbacatePayBilling;
 use Eduardoks98\PaymentAbacatePay\Enums\BillingStatus;
