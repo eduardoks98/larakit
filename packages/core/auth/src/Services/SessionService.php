@@ -20,6 +20,10 @@ class SessionService
             return null;
         }
 
+        $ua = $request->userAgent() ?? '';
+        $platform = $request->input('platform') ?? $this->detectPlatform($ua);
+        $appVersion = $request->input('app_version') ?? $request->header('X-App-Version');
+
         return UserSession::updateOrCreate(
             [
                 'user_id' => $user->id,
@@ -27,7 +31,11 @@ class SessionService
             ],
             [
                 'ip' => config('auth.session_tracking.log_ip_address') ? $request->ip() : null,
-                'user_agent' => config('auth.session_tracking.log_user_agent') ? $request->userAgent() : null,
+                'ip_address' => config('auth.session_tracking.log_ip_address') ? $request->ip() : null,
+                'user_agent' => config('auth.session_tracking.log_user_agent') ? $ua : null,
+                'platform' => $platform,
+                'app_version' => $appVersion,
+                'started_at' => now(),
                 'last_activity' => now(),
             ]
         );
@@ -132,5 +140,22 @@ class SessionService
         return UserSession::where('user_id', $user->id)
             ->where('device_id', $deviceId)
             ->exists();
+    }
+
+    /**
+     * Detect platform from user agent string.
+     */
+    private function detectPlatform(string $ua): ?string
+    {
+        if (str_contains($ua, 'Android') || str_contains($ua, 'okhttp')) {
+            return 'android';
+        }
+        if (str_contains($ua, 'iPhone') || str_contains($ua, 'iPad') || str_contains($ua, 'Darwin')) {
+            return 'ios';
+        }
+        if (str_contains($ua, 'Mozilla') || str_contains($ua, 'Chrome') || str_contains($ua, 'Safari')) {
+            return 'web';
+        }
+        return null;
     }
 }

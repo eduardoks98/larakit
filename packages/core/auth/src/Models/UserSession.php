@@ -10,13 +10,22 @@ class UserSession extends Model
     protected $fillable = [
         'user_id',
         'ip',
+        'ip_address',
         'user_agent',
         'device_id',
+        'device_name',
+        'platform',
+        'app_version',
+        'started_at',
+        'ended_at',
+        'duration_seconds',
         'last_activity',
     ];
 
     protected $casts = [
         'last_activity' => 'datetime',
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
     ];
 
     /**
@@ -87,19 +96,23 @@ class UserSession extends Model
     }
 
     /**
-     * Get platform from user agent.
+     * Get platform from user agent (fallback when platform column is null).
      */
-    public function getPlatformAttribute(): ?string
+    public function getDetectedPlatformAttribute(): ?string
     {
+        if ($this->attributes['platform'] ?? null) {
+            return $this->attributes['platform'];
+        }
+
         if (!$this->user_agent) {
             return null;
         }
 
+        if (preg_match('/Android/i', $this->user_agent)) return 'Android';
+        if (preg_match('/iOS|iPhone|iPad/i', $this->user_agent)) return 'iOS';
         if (preg_match('/Windows/i', $this->user_agent)) return 'Windows';
         if (preg_match('/Mac OS X/i', $this->user_agent)) return 'macOS';
         if (preg_match('/Linux/i', $this->user_agent)) return 'Linux';
-        if (preg_match('/Android/i', $this->user_agent)) return 'Android';
-        if (preg_match('/iOS|iPhone|iPad/i', $this->user_agent)) return 'iOS';
 
         return 'Unknown';
     }
