@@ -1,0 +1,52 @@
+# Split dos pacotes PHP do larakit em repos espelho read-only (consumo via Composer/VCS).
+# Disparo: tag `php-vX.Y.Z` no monorepo → cada pacote vira tag `vX.Y.Z` no seu repo espelho.
+# Os repos espelho NÃO devem ser editados à mão (a fonte é este monorepo).
+name: Split PHP packages
+
+on:
+  push:
+    tags:
+      - 'php-v*'
+  workflow_dispatch:
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - local: packages/core/base-api
+            repo: base-api
+          - local: packages/core/security
+            repo: security
+          - local: packages/core/auth
+            repo: auth
+          - local: packages/auth/google
+            repo: auth-google
+          - local: packages/payment/stripe
+            repo: payment-stripe
+          - local: packages/payment/abacatepay
+            repo: payment-abacatepay
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Deriva a tag do repo espelho da tag do monorepo: php-v1.0.0 -> v1.0.0
+      - name: Compute split tag
+        id: tag
+        run: echo "value=${GITHUB_REF_NAME#php-}" >> "$GITHUB_OUTPUT"
+
+      - name: Split ${{ matrix.repo }}
+        uses: danharrin/monorepo-split-github-action@v2.4.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.SPLIT_PUSH_TOKEN }}
+        with:
+          package_directory: ${{ matrix.local }}
+          repository_organization: eduardoks98
+          repository_name: ${{ matrix.repo }}
+          user_name: eduardoks98
+          user_email: devteam@grupodva.com.br
+          branch: master
+          tag: ${{ steps.tag.outputs.value }}
