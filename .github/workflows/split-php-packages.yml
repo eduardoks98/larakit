@@ -29,19 +29,17 @@ jobs:
           - local: packages/payment/abacatepay
             repo: payment-abacatepay
     steps:
-      # ref: master — a action precisa da branch local pra dar push; em trigger
-      # de tag o checkout ficaria detached e o push da branch falharia
-      # (pathspec 'master' did not match). A tag a publicar vem do input `tag`.
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: master
 
       # Deriva a tag do repo espelho da tag do monorepo: php-v1.0.0 -> v1.0.0
       - name: Compute split tag
         id: tag
         run: echo "value=${GITHUB_REF_NAME#php-}" >> "$GITHUB_OUTPUT"
 
+      # Disparo por TAG: passar SOMENTE `tag` (sem `branch` — senão a action
+      # tenta pushar uma branch inexistente no contexto detached → pathspec error)
       - name: Split ${{ matrix.repo }}
         uses: danharrin/monorepo-split-github-action@v2.4.5
         env:
@@ -52,5 +50,4 @@ jobs:
           repository_name: ${{ matrix.repo }}
           user_name: eduardoks98
           user_email: devteam@grupodva.com.br
-          branch: master
           tag: ${{ steps.tag.outputs.value }}
