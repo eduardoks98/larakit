@@ -29,9 +29,13 @@ jobs:
           - local: packages/payment/abacatepay
             repo: payment-abacatepay
     steps:
+      # ref: master — a action precisa da branch local pra dar push; em trigger
+      # de tag o checkout ficaria detached e o push da branch falharia
+      # (pathspec 'master' did not match). A tag a publicar vem do input `tag`.
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: master
 
       # Deriva a tag do repo espelho da tag do monorepo: php-v1.0.0 -> v1.0.0
       - name: Compute split tag
