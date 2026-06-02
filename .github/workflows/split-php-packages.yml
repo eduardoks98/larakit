@@ -29,17 +29,20 @@ jobs:
           - local: packages/payment/abacatepay
             repo: payment-abacatepay
     steps:
+      # ref: master é ESSENCIAL: o trigger é uma tag; sem isto o checkout fica
+      # detached e não há ref local `master` pra action empurrar.
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: master
 
       # Deriva a tag do repo espelho da tag do monorepo: php-v1.0.0 -> v1.0.0
       - name: Compute split tag
         id: tag
         run: echo "value=${GITHUB_REF_NAME#php-}" >> "$GITHUB_OUTPUT"
 
-      # Disparo por TAG: passar SOMENTE `tag` (sem `branch` — senão a action
-      # tenta pushar uma branch inexistente no contexto detached → pathspec error)
+      # branch: master (a action default seria `main`, mas o larakit usa master)
+      # + ref:master acima = a action acha a branch local e empurra master+tag.
       - name: Split ${{ matrix.repo }}
         uses: danharrin/monorepo-split-github-action@v2.4.5
         env:
@@ -50,4 +53,5 @@ jobs:
           repository_name: ${{ matrix.repo }}
           user_name: eduardoks98
           user_email: devteam@grupodva.com.br
+          branch: master
           tag: ${{ steps.tag.outputs.value }}
