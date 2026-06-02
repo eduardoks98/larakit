@@ -18,8 +18,8 @@ enum PaymentMethod: string
     public function toSdkValue(): string
     {
         return match($this) {
-            self::PIX => \AbacatePay\Methods::PIX,
-            self::CARD => \AbacatePay\Methods::CARD,
+            self::PIX => \AbacatePay\Enums\Billing\Methods::PIX->value,
+            self::CARD => 'CARD',
         };
     }
 

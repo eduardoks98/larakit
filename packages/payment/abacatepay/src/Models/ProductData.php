@@ -28,7 +28,7 @@ class ProductData
     /**
      * Convert to AbacatePay SDK Product object
      */
-    public function toSdkProduct(): \AbacatePay\Product
+    public function toSdkProduct(): \AbacatePay\Resources\Billing\Product
     {
         $data = [
             'name' => $this->name,
@@ -44,7 +44,7 @@ class ProductData
             $data['externalId'] = $this->externalId;
         }
 
-        return new \AbacatePay\Product($data);
+        return new \AbacatePay\Resources\Billing\Product($data);
     }
 
     /**

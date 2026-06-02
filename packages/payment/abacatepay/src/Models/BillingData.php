@@ -35,7 +35,7 @@ class BillingData
     /**
      * Convert to AbacatePay SDK Billing object
      */
-    public function toSdkBilling(): \AbacatePay\Billing
+    public function toSdkBilling(): \AbacatePay\Resources\Billing
     {
         $data = [
             'frequency' => $this->frequency->toSdkValue(),
@@ -65,7 +65,7 @@ class BillingData
             $data['completionUrl'] = $this->completionUrl;
         }
 
-        return new \AbacatePay\Billing($data);
+        return new \AbacatePay\Resources\Billing($data);
     }
 
     /**

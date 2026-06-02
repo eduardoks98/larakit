@@ -6,8 +6,10 @@ use AbacatePay\Clients\Client;
 use AbacatePay\Clients\BillingClient;
 use AbacatePay\Clients\CustomerClient;
 use Eduardoks98\PaymentAbacatePay\Models\BillingData;
+use Eduardoks98\PaymentAbacatePay\Models\ProductData;
 use Eduardoks98\PaymentAbacatePay\Models\AbacatePayBilling;
 use Eduardoks98\PaymentAbacatePay\Enums\BillingStatus;
+use Eduardoks98\PaymentAbacatePay\Enums\PaymentMethod;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -70,11 +72,46 @@ class AbacatePayService
     {
         $this->ensureConfigured();
         try {
-            // Convert to SDK Billing object
-            $sdkBilling = $billingData->toSdkBilling();
+            // Build request data directly from wrapper DTOs
+            // (bypass new Billing() which crashes on MONTHLY/YEARLY — SDK enum only has ONE_TIME)
+            $requestData = [
+                'frequency' => $billingData->frequency->toSdkValue(),
+                'methods' => array_map(
+                    fn(PaymentMethod $method) => $method->toSdkValue(),
+                    $billingData->methods
+                ),
+                'products' => array_map(fn(ProductData $product) => [
+                    'externalId' => $product->externalId ?? uniqid('prod_'),
+                    'name' => $product->name,
+                    'description' => $product->description ?? $product->name,
+                    'quantity' => $product->quantity,
+                    'price' => $product->price,
+                ], $billingData->products),
+            ];
 
-            // Create billing using official SDK
-            $response = $this->billingClient->create($sdkBilling);
+            if ($billingData->customer) {
+                $requestData['customer'] = [
+                    'name' => $billingData->customer->name ?? '',
+                    'email' => $billingData->customer->email,
+                    'cellphone' => $billingData->customer->cellphone ?? '',
+                    'taxId' => $billingData->customer->taxId ?? '',
+                ];
+            }
+
+            if ($billingData->returnUrl) {
+                $requestData['returnUrl'] = $billingData->returnUrl;
+            }
+            if ($billingData->completionUrl) {
+                $requestData['completionUrl'] = $billingData->completionUrl;
+            }
+            if ($billingData->metadata) {
+                $requestData['metadata'] = $billingData->metadata;
+            }
+
+            // Call SDK HTTP client directly, bypassing Billing resource
+            $response = $this->billingClient->request('POST', 'create', [
+                'json' => $requestData,
+            ]);
 
             // Store in database if enabled
             if (config('abacatepay.store_billings', true)) {

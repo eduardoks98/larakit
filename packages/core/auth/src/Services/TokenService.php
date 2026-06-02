@@ -94,8 +94,13 @@ class TokenService
         // Create new access token
         $newAccessToken = $this->createAccessToken($user, $deviceName, $deviceId);
 
+        // Create new refresh token and revoke old one
+        $newRefreshToken = $this->createRefreshToken($user, $deviceName, $deviceId);
+        $refreshToken->delete();
+
         return [
             'access_token' => $newAccessToken->plainTextToken,
+            'refresh_token' => $newRefreshToken->plainTextToken,
             'user' => $user,
         ];
     }

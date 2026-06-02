@@ -103,8 +103,10 @@ class AuthController extends ApiController
 
             return $this->success([
                 'access_token' => $result['access_token'],
+                'refresh_token' => $result['refresh_token'],
                 'token_type' => 'Bearer',
                 'expires_in' => config('auth.sanctum.access_token_expiration', 15) * 60,
+                'refresh_expires_in' => config('auth.sanctum.refresh_token_expiration', 10080) * 60,
             ]);
         } catch (\Exception $e) {
             return problemDetails(

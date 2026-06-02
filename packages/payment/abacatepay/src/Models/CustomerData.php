@@ -26,7 +26,7 @@ class CustomerData
     /**
      * Convert to AbacatePay SDK Customer object
      */
-    public function toSdkCustomer(): \AbacatePay\Customer
+    public function toSdkCustomer(): \AbacatePay\Resources\Customer
     {
         $data = [
             'email' => $this->email,
@@ -44,7 +44,7 @@ class CustomerData
             $data['taxId'] = $this->taxId;
         }
 
-        return new \AbacatePay\Customer($data);
+        return new \AbacatePay\Resources\Customer($data);
     }
 
     /**

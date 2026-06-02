@@ -14,14 +14,17 @@ enum Frequency: string
     case YEARLY = 'yearly';
 
     /**
-     * Get the AbacatePay SDK constant value
+     * Get the AbacatePay API value
+     *
+     * API only accepts: ONE_TIME, MULTIPLE_PAYMENTS
+     * Monthly/Yearly are treated as MULTIPLE_PAYMENTS (differentiated by price/metadata)
      */
     public function toSdkValue(): string
     {
         return match($this) {
-            self::ONE_TIME => \AbacatePay\Frequencies::ONE_TIME,
-            self::MONTHLY => \AbacatePay\Frequencies::MONTHLY,
-            self::YEARLY => \AbacatePay\Frequencies::YEARLY,
+            self::ONE_TIME => 'ONE_TIME',
+            self::MONTHLY => 'MULTIPLE_PAYMENTS',
+            self::YEARLY => 'MULTIPLE_PAYMENTS',
         };
     }
 
