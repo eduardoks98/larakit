@@ -23,8 +23,11 @@
             "providers": [
                 "Eduardoks98\\AnalyticsGoogle\\GoogleAnalyticsServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

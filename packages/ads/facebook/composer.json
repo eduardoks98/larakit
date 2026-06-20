@@ -47,6 +47,9 @@
             "providers": [
                 "Eduardoks98\\AdsFacebook\\AdsFacebookServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     },
     "minimum-stability": "stable",

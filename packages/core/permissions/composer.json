@@ -48,6 +48,9 @@
             "providers": [
                 "Eduardoks98\\Permissions\\PermissionsServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     },
     "minimum-stability": "stable",

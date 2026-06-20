@@ -35,6 +35,9 @@
             "providers": [
                 "Eduardoks98\\Banking\\BankingServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     },
     "minimum-stability": "stable",

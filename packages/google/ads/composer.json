@@ -48,6 +48,9 @@
             "providers": [
                 "Eduardoks98\\AdsGoogle\\AdsGoogleServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     },
     "minimum-stability": "stable",

@@ -49,6 +49,9 @@
             "providers": [
                 "Eduardoks98\\DiscordAuth\\DiscordAuthServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     },
     "minimum-stability": "stable",

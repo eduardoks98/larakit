@@ -16,18 +16,81 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # core
           - local: packages/core/base-api
             repo: base-api
+          - local: packages/core/helpers
+            repo: helpers
           - local: packages/core/security
             repo: security
+          - local: packages/core/rate-limiter
+            repo: rate-limiter
+          - local: packages/core/recaptcha
+            repo: recaptcha
           - local: packages/core/auth
             repo: auth
+          - local: packages/core/performance
+            repo: performance
+          - local: packages/core/reverb
+            repo: reverb
+          - local: packages/core/api-docs
+            repo: api-docs
+          - local: packages/core/health
+            repo: health
+          - local: packages/core/permissions
+            repo: permissions
+          # auth (social)
           - local: packages/auth/google
             repo: auth-google
+          - local: packages/auth/facebook
+            repo: auth-facebook
+          - local: packages/auth/microsoft
+            repo: auth-microsoft
+          - local: packages/auth/discord
+            repo: auth-discord
+          # payment
           - local: packages/payment/stripe
             repo: payment-stripe
+          - local: packages/payment/mercadopago
+            repo: payment-mercadopago
           - local: packages/payment/abacatepay
             repo: payment-abacatepay
+          # sms / whatsapp
+          - local: packages/sms/twilio
+            repo: sms-twilio
+          - local: packages/sms/comtele
+            repo: sms-comtele
+          - local: packages/whatsapp/official
+            repo: whatsapp-official
+          - local: packages/whatsapp/converx
+            repo: whatsapp-converx
+          # storage
+          - local: packages/storage/s3
+            repo: storage-s3
+          - local: packages/storage/media-library
+            repo: media-library
+          # brazilian
+          - local: packages/brazilian/geolocation
+            repo: geolocation
+          - local: packages/brazilian/email-validator
+            repo: email-validator
+          - local: packages/brazilian/banking
+            repo: banking
+          # monetization / ads / analytics
+          - local: packages/monetization/core
+            repo: monetization
+          - local: packages/ads/unity
+            repo: ads-unity
+          - local: packages/ads/applovin
+            repo: ads-applovin
+          - local: packages/ads/facebook
+            repo: ads-facebook
+          - local: packages/google/ads
+            repo: ads-google
+          - local: packages/google/adsense
+            repo: ads-adsense
+          - local: packages/analytics/google
+            repo: analytics-google
     steps:
       # ref: master é ESSENCIAL: o trigger é uma tag; sem isto o checkout fica
       # detached e não há ref local `master` pra action empurrar.

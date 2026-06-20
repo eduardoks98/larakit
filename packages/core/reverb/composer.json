@@ -18,6 +18,11 @@
             "providers": [
                 "Eduardoks98\\Reverb\\ReverbServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

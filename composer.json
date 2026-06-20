@@ -152,7 +152,7 @@
         },
         {
             "type": "path",
-            "url": "./packages/ads/google",
+            "url": "./packages/google/ads",
             "options": {"symlink": true}
         },
         {
@@ -177,7 +177,17 @@
         },
         {
             "type": "path",
-            "url": "./packages/ads/adsense",
+            "url": "./packages/google/adsense",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/auth/discord",
+            "options": {"symlink": true}
+        },
+        {
+            "type": "path",
+            "url": "./packages/analytics/google",
             "options": {"symlink": true}
         }
     ],

@@ -19,6 +19,11 @@
             "providers": [
                 "Eduardoks98\\Health\\HealthServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

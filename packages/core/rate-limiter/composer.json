@@ -54,6 +54,9 @@
             "providers": [
                 "Eduardoks98\\RateLimiter\\RateLimiterServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     },
     "minimum-stability": "stable",

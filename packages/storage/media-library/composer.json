@@ -35,8 +35,11 @@
             "providers": [
                 "Eduardoks98\\MediaLibrary\\MediaLibraryServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

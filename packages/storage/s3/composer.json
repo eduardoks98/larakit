@@ -37,8 +37,11 @@
             "aliases": {
                 "S3Storage": "Eduardoks98\\StorageS3\\Facades\\S3Storage"
             }
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

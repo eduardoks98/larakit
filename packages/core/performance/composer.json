@@ -43,6 +43,9 @@
             "providers": [
                 "Eduardoks98\\Performance\\PerformanceServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     },
     "minimum-stability": "stable",
