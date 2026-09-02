@@ -7,5 +7,7 @@ Route::middleware(config('permissions.admin_middleware', ['web', 'auth']))
     ->prefix(config('permissions.admin_prefix', 'admin'))
     ->name('admin.')
     ->group(function () {
-        Route::resource('profiles', ProfileController::class);
+        // O controller nao implementa show() — sem o except, GET profiles/{id}
+        // gera rota que morre em "Call to undefined method ...::show()".
+        Route::resource('profiles', ProfileController::class)->except(['show']);
     });
